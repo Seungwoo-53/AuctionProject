@@ -19,7 +19,6 @@
                 <div class="col-md-3 mb-2 mb-md-0 px-2">
                     <a href="#" class="d-inline-flex link-body-emphasis text-decoration-none">
                         <i class="fa-solid fa-frog" style="font-size: 1.5em;"></i>
-                        </svg>
                     </a>
                 </div>
 
@@ -31,8 +30,8 @@
                 </ul>
 
                 <div class="col-md-3 text-end px-2">
-                    <button type="button" class="btn btn-light">로그인</button>
-                    <button type="button" class="btn btn-secondary">회원가입</button>
+                    <a th:href="@{/member/login}" class="btn btn-light">로그인</a>
+                    <a th:href="@{/member/signup}" class="btn btn-secondary">회원가입</a>
                 </div>
             </header>
         </div>
