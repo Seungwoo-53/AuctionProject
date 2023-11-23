@@ -14,12 +14,38 @@
 <body>
     <!-- header -->
     <div th:insert="~{/common/header :: headerFragment}"></div>
-    <!-- header -->
 
-    <h2> 회원가입 페이지</h2>
+    <main class="form-signin w-100 m-auto">
+        <a th:href="@{/}" class="mb-4 text-center" >
+            <i class="fa-solid fa-frog" style="font-size: 3em; color : #6c757d"><span>Auction</span></i>
+            <!-- <h1 class="h3 mb-3 fw-normal">Auction</h1> -->
+        </a>
+        <form th:action="@{/member/signup}" method="post">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="username" name="username">
+                <label for="username">ID</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="userpass" name="userpass">
+                <label for="userpass">Password</label>
+            </div>
+            <button class="btn btn-primary w-100 py-2 btn-secondary" type="submit">회원가입</button>
+        </form>
 
-    
-    <!-- footer 시작 -->
+        <div th:fragment="footerFragment" class="container " style="--bs-gutter-x : 0;">
+            <footer  class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+                <ul class="nav col-md-4 list-unstyled d-flex px-2">
+                    <li class="ms-2"><a class="text-body-secondary" href="#"><i class="fa-brands fa-github"
+                                style="font-size: 1.5em;"></i></a></li>
+                    <li class="ms-2"><a class="text-body-secondary" href="#"><i class="fa-brands fa-instagram"
+                                style="font-size: 1.5em;"></i></a></li>
+                    <li class="ms-2"><a class="text-body-secondary" href="#"><i class="fa-brands fa-youtube"
+                                style="font-size: 1.5em;"></i></a></li>
+                </ul>
+              
+            </footer>
+        </div>
+      </main>
     <div th:insert="~{/common/footer :: footerFragment}"></div>
     <!-- footer 끝  -->
 
