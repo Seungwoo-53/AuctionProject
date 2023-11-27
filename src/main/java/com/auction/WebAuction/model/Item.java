@@ -15,11 +15,11 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String itemName;
-    private String itemInfo;
-    private int itemPrice;
-    private int itemView;
-    private LocalDateTime itemDate;
-
+    private String title;
+    private String info;
+    private int price;
+    private int view_count;
+    private LocalDateTime date;
+    private String url;
 
 }

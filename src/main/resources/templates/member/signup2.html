@@ -7,34 +7,39 @@
     <title>경매</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link th:href="@{/css/signup.css}" rel="stylesheet">
+    <link href="/static/css/signup.css" rel="stylesheet">
 
-    <link th:href="@{/css/login.css}" rel="stylesheet">
 </head>
 
-<body class="d-flex align-items-center py-4 bg-body-tertiary">
-    <main class="form-signin w-100 m-auto">
-        <a th:href="@{/}" class="mb-4 text-center" >
-            <i class="fa-solid fa-frog" style="font-size: 3em; color : #6c757d"><span>Auction</span></i>
-            <!-- <h1 class="h3 mb-3 fw-normal">Auction</h1> -->
-        </a>
-        <div th:if="${param.error}" class="alert alert-danger" role="alert" >
-            Invalid username and password.
-        </div>
-        <div th:if="${param.logout}" class="alert alert-primary" role="alert">
-            You have been logged out.
-        </div>
-        <form th:action="@{/member/login}" method="post">
+
+    <body class="d-flex align-items-center py-4 bg-body-tertiary">
+    <main class="form-signup w-100 m-auto">
+        <form>
+            <a th:href="@{/}" class="mb-4 text-center" >
+                <i class="fa-solid fa-frog" style="font-size: 3em; color : #6c757d"><span>Auction</span></i>
+            </a>
             <div class="form-floating">
-                <input type="text" class="form-control" id="username" name="username">
-                <label for="username">ID</label>
+                <input type="text" class="form-control" id="floatingInput">
+                <label for="floatingInput">아이디</label>
             </div>
             <div class="form-floating">
-                <input type="password" class="form-control" id="userpass" name="userpass">
-                <label for="userpass">Password</label>
+                <input type="password" class="form-control" id="floatingPassword" >
+                <label for="floatingPassword">비밀번호</label>
             </div>
-            <button class="btn btn-primary w-100 py-2 btn-secondary" type="submit">로그인</button>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="ex1" >
+                <label for="floatingInput" class="inputplaceholder">닉네임</label>
+            </div>
+            <div class="form-floating last">
+                <input type="text" class="form-control" id="ex2" >
+                <label for="floatingPassword">info</label>
+            </div>
+
+            <button class="btn btn-primary w-100 py-2 btn-secondary sign_up" type="submit">회원가입</button>
         </form>
 
+        <!-- footer   -->
         <div th:fragment="footerFragment" class="container " style="--bs-gutter-x : 0;">
             <footer  class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
                 <ul class="nav col-md-4 list-unstyled d-flex px-2">
@@ -45,17 +50,13 @@
                     <li class="ms-2"><a class="text-body-secondary" href="#"><i class="fa-brands fa-youtube"
                                 style="font-size: 1.5em;"></i></a></li>
                 </ul>
-
-                <div class="col-md-4 d-flex px-2">
-                    <a th:href="@{/member/signup}" class="btn btn-primary w-100 py-2 btn-secondary" type="submit">회원가입</a>
-                </div>
-    
-              
             </footer>
         </div>
-      </main>
 
-  
+    <!-- footer 끝  -->
+    </main>
+
+        
 
     <script src="https://kit.fontawesome.com/60b75f9d43.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"

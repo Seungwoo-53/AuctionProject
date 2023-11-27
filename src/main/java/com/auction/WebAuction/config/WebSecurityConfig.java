@@ -37,7 +37,7 @@ public class WebSecurityConfig {
                         .loginProcessingUrl("/member/login")	// [B] submit 받을 url
                         .usernameParameter("username")	// [C] submit할 아이디
                         .passwordParameter("userpass")	// [D] submit할 비밀번호
-                         .defaultSuccessUrl("/", true)
+                        .defaultSuccessUrl("/", true)
 
                         .permitAll()
                 )

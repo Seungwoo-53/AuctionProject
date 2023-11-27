@@ -10,7 +10,9 @@ body {
 .form-signin .form-floating:focus-within {
   z-index: 2;
 }
-
+.fa-solid.fa-frog{
+  padding-bottom: 15px;
+}
 .form-signin {
   margin-bottom: -1px;
   border-bottom-right-radius: 0;

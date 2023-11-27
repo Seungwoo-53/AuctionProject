@@ -1,6 +1,5 @@
 package com.auction.WebAuction.controller;
 
-import com.auction.WebAuction.dto.MemberLoginDto;
 import com.auction.WebAuction.model.Member;
 import com.auction.WebAuction.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +28,10 @@ public class MemberController {
     @GetMapping("/signup")
     public String signup(){
         return "/member/signup";
+    }
+    @GetMapping("/signup2")
+    public String signup2(){
+        return "/member/signup2";
     }
     @PostMapping("/signup")
     public String signup(Member member){

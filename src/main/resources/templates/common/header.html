@@ -18,7 +18,7 @@
             <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom" >
                 <div class="col-md-3 mb-2 mb-md-0 px-2">
                     <a href="#" class="d-inline-flex link-body-emphasis text-decoration-none">
-                        <i class="fa-solid fa-frog" style="font-size: 1.5em;"></i>
+                        <i class="fa-solid fa-frog" style="font-size: 2em;"></i>
                     </a>
                 </div>
 
@@ -31,7 +31,7 @@
 
                 <div class="col-md-3 text-end px-2">
                     <a th:href="@{/member/login}" class="btn btn-light" sec:authorize="!isAuthenticated()">로그인</a>
-                    <a th:href="@{/member/signup}" class="btn btn-secondary">회원가입</a>
+                    <a th:href="@{/member/signup}" class="btn btn-secondary" sec:authorize="!isAuthenticated()">회원가입</a>
                     <div sec:authorize="isAuthenticated()">
                     <a th:href="@{/member/mypage}"><i class="fa-regular fa-circle-user fa-xl" style="color: #a9b4c7;"></i></a>
                         <span sec:authentication="name">사용자  </span>
