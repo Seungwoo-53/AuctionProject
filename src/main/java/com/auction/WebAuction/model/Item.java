@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,8 +19,11 @@ public class Item {
     private String title;
     private String info;
     private int price;
-    private int view_count;
+    private long view_count;
     private LocalDateTime date;
     private String url;
 
+    public void setPrice(int price) {
+        this.price = price;
+    }
 }
