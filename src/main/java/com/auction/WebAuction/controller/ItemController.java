@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -40,7 +41,6 @@ public class ItemController {
     @ResponseBody
     public String updatePrice(@PathVariable("id") long id, @RequestParam int price,Model model) {
         Optional<Item> itemOptional = itemRepository.findById(id);
-
         if (itemOptional.isPresent()) {
             Item item = itemOptional.get();
             item.setPrice(price);
@@ -52,5 +52,14 @@ public class ItemController {
         }
     }
 
-
+    @GetMapping("register")
+    public String register(Model model){
+        List<Item> item = itemRepository.findAll();
+        model.addAttribute("item", item);
+        return "/item/register";
+    }
+    @GetMapping("newRegister")
+    public String newRegister(Model model){
+        return "/item/newRegister";
+    }
 }

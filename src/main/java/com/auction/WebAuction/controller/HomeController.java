@@ -13,7 +13,7 @@ import java.util.List;
 public class HomeController {
     @Autowired
     private ItemRepository itemRepository;
-    @GetMapping
+    @GetMapping("/")
     public String index(Model model){
         List<Item> item = itemRepository.findAll();
         model.addAttribute("item", item);

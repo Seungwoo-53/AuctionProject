@@ -23,6 +23,10 @@ public class Item {
     private LocalDateTime date;
     private String url;
 
+    public int getPrice() {
+        return price;
+    }
+
     public void setPrice(int price) {
         this.price = price;
     }
