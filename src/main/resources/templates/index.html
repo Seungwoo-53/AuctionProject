@@ -44,8 +44,8 @@
                             <p class="card-text" th:text="${item.info}">경매 아이템 설명</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <p>시작금액 : </p>
-                                    <p class="card-text px-2" th:text="${item.price}"></p>
+                                    <p>현재 금액 : </p>
+                                    <p class="card-text px-2" data-th-text="${#numbers.formatInteger(item.price, 3, 'COMMA') + '원'}"></p>
                                 </div>
                             </div>
                             <small class="text-body-secondary text-end">경매 종료 기한 : [ 00 : 00 : 00 ]</small>

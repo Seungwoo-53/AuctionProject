@@ -19,52 +19,31 @@
 
 <!-- 경매물품 구간 -->
 <section class="py-5 text-center container">
-    <p>새로운 경매 아이템 등록 페이지 입니다.</p>
+    <p>새로운 경매 아이템 수정 | 삭제 페이지 입니다.</p>
     <main class="w-100">
-    <form th:action="@{/item/newRegister}" class="m-auto"  method="post" >
+    <form th:action="@{/item/editRegister/{id}(id=${item.id})}" class="m-auto"   th:object="${item}"  method="post" >
+        <input type="hidden" name="_method" value="put"/>
+<!--        <input type="hidden" name="id" th:field="*{id}" th:value="${item.id}" />-->
         <div class="form-floating m-5">
-            <input type="text" class="form-control" id="title" name = "title" >
+            <input type="text" class="form-control" id="title" name = "title"  th:value="${item.title}">
             <label for="title">Title</label>
         </div>
         <div class="form-floating m-5">
-            <input type="text" class="form-control" id="info" name = "info">
+            <input type="text" class="form-control" id="info" name = "info"  th:value="${item.info}">
             <label for="info">Info</label>
         </div>
         <div class="form-floating m-5">
-            <input type="number" class="form-control" id="price" name = "price" >
+            <input type="number" class="form-control" id="price" name = "price"   th:value="${item.price}">
             <label for="price">Price</label>
         </div>
         <div class="form-floating last m-5">
-            <input type="text" class="form-control" id="url" name = "url" >
+            <input type="text" class="form-control" id="url" name = "url"  th:value="${item.url}" >
             <label for="url">Image_Url</label>
         </div>
-        <button class="btn btn-primary w-100 py-2 btn-secondary sign_up" type="submit" onclick="validateForm()" id="submitButton">등록</button>
-        <p id="errorMessage" class="error-message"></p>
-
+        <button class="btn btn-primary w-100 py-2 btn-secondary sign_up" type="submit"  id="editButton">수정</button>
     </form>
     </main>
 </section>
-
-<script>
-    function validateForm() {
-      var titleInput = document.getElementById('title').value;
-      var infoInput = document.getElementById('info').value;
-      var priceInput = document.getElementById('price').value;
-      var urlInput = document.getElementById('url').value;
-      var errorMessageElement = document.getElementById('errorMessage');
-      var submitButton = document.getElementById('submitButton');
-
-      // 입력 필드 중 하나라도 비어 있으면
-      if (titleInput === '' || infoInput === '' || priceInput === '' || urlInput === '') {
-        errorMessageElement.textContent = '모든 필드를 작성하세요.';
-        submitButton.disabled = true; // 버튼 비활성화
-      } else {
-        errorMessageElement.textContent = '';
-        submitButton.disabled = false; // 버튼 활성화
-
-}
-}
-</script>
 
 <!-- footer 시작 -->
 <div th:insert="~{/common/footer :: footerFragment}"></div>

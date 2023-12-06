@@ -1,13 +1,14 @@
 package com.auction.WebAuction.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -30,4 +31,7 @@ public class Item {
     public void setPrice(int price) {
         this.price = price;
     }
+
+    @OneToMany(mappedBy = "item")
+    private List<MemberItem> memberItems = new ArrayList<>();
 }

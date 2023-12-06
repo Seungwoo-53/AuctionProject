@@ -9,6 +9,12 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link th:href="@{/css/AuctionItems.css}" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script th:if="${successMessage}" th:inline="javascript">
+        alert([[${successMessage}]]);
+    </script>
+    <script th:if="${errorMessage}" th:inline="javascript">
+        alert([[${errorMessage}]]);
+    </script>
 </head>
 
 <body>
@@ -27,37 +33,23 @@
             </div>
         </div>
         <div>
+            <p>현재 낙찰자 이름 : <span th:text="${member.username}"></span></p>
             <p>현재 금액 : <span id="price" data-th-text="${#numbers.formatInteger(item.price, 3, 'COMMA') + '원'}">0.00</span></p>
+<!--            <p>현재 보유 포인트 : </p> <span id="point" th:text="${point}"></span>-->
+            <p>현재 보유 포인트 : <span id="point" data-th-text="${#numbers.formatInteger(point, 3, 'COMMA') + '원'}"></span></p>
         </div>
-        <form id="priceForm" th:action="@{/item/detail/+ ${item.id}}" th:object="${item}" method="post">
+        <form id="priceForm" th:action="@{/item/detail/{id}(id=${item.id})}"  method="post">
             <!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> -->
             <label for="inputPrice">입력 금액 : </label>
-            <input type="text" id="inputPrice" th:value="${item.price}"/>
+            <input type="text" id="inputPrice" name="price" th:value="${item.price}"/>
             <div>
-                <button type="button" onclick="updatePrice()">입찰</button>
+<!--                <button type="button" onclick="updatePrice()">입찰</button>-->
+                <button type="submit">입찰</button>
                 <button type="button">빠른 입찰</button>
             </div>
         </form>
         <small class="text-body-secondary text-end">조회수 : </small>
         <small class="text-body-secondary text-end"th:text="${item.view_count}"></small>
-        <script>
-            function updatePrice() {
-                var price = $('#inputPrice').val();
-                var id =[[${item.id}]];
-                $.ajax({
-                    type: 'POST',
-                    url: '/item/detail/' + id,
-                    data: { 'price': price },
-                    success: function (response) {
-                        $('#price').text(price);
-                        alert(response);
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    }
-                });
-            }
-        </script>
     </section>
 
 

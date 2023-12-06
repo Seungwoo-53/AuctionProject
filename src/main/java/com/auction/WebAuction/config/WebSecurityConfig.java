@@ -1,22 +1,26 @@
 package com.auction.WebAuction.config;
 
+import com.auction.WebAuction.model.Member;
 import jakarta.servlet.DispatcherType;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.sql.DataSource;
+
+import java.io.IOException;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -25,25 +29,33 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class WebSecurityConfig {
     @Autowired
     private DataSource dataSource;
+
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .authorizeHttpRequests(request -> request
-                        .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                        .requestMatchers("/images/**", "/" ,"/css/**","/member/signup","/member/login").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .formLogin(login -> login
-                        .loginPage("/member/login")	// [A] 커스텀 로그인 페이지 지정
-                        .loginProcessingUrl("/member/login")	// [B] submit 받을 url
-                        .usernameParameter("username")	// [C] submit할 아이디
-                        .passwordParameter("userpass")	// [D] submit할 비밀번호
-                        .defaultSuccessUrl("/", true)
+        http.csrf().disable();
+        try {
+            http
+                    .authorizeHttpRequests(request -> request
+                            .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
+                            .requestMatchers("/images/**", "/", "/css/**", "/member/signup", "/member/login").permitAll()
+                            .anyRequest().authenticated()
+                    )
+                    .formLogin(login -> login
+                            .loginPage("/member/login")    // [A] 커스텀 로그인 페이지 지정
+                            .loginProcessingUrl("/member/login")    // [B] submit 받을 url
+                            .usernameParameter("username")    // [C] submit할 아이디
+                            .passwordParameter("userpass")    // [D] submit할 비밀번호
+                            .defaultSuccessUrl("/", true)
 
-                        .permitAll()
-                )
-                .logout(withDefaults());
+                            .permitAll()
+                    )
+                    .logout(withDefaults());
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+
 
         return http.build();
     }
@@ -60,6 +72,8 @@ public class WebSecurityConfig {
                         + "inner join role r on mr.role_id = r.id "
                         + "where m.username = ? ");
     }
+
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

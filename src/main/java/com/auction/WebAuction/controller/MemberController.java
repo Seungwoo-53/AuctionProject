@@ -18,13 +18,7 @@ public class MemberController {
     public String login(){
         return "/member/login";
     }
-//    @PostMapping("/loginAction")
-//    public String login(MemberLoginDto dto) {
-//        boolean isValidMember = memberService.isValidMember(dto.getUsername(), dto.getUserpass());
-//        if (isValidMember)
-//            return "dashboard";
-//        return "/member/login";
-//    }
+
     @GetMapping("/signup")
     public String signup(){
         return "/member/signup";

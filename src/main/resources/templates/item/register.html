@@ -27,6 +27,7 @@
                 <th>title</th>
                 <th>info</th>
                 <th>price</th>
+                <th>status</th>
                 <!-- 추가적인 필드들을 필요에 따라 추가 -->
             </tr>
             </thead>
@@ -37,6 +38,11 @@
                 <td th:text="${item.title}"></td>
                 <td th:text="${item.info}"></td>
                 <td th:text="${item.price}"></td>
+                <td><a th:href="@{/item/editRegister/{id}(id=${item.id})}" class="btn btn-primary w-100 py-2 btn-secondary my-3" > 수정</a></td>
+                <form  th:action="@{/item/delRegister/{id}(id=${item.id})}"  th:object="${item}"  method="post">
+                    <input type="hidden" name="_method" value="delete"/>
+                    <td> <button class="btn btn-primary w-100 py-2 btn-secondary sign_up" type="submit"  id="delButton">삭제</button></td>
+                </form>
                 <!-- 추가적인 필드들을 필요에 따라 추가 -->
             </tr>
             </tbody>
