@@ -25,6 +25,10 @@
                                 <div class="btn-group">
                                 </div>
                                 <small class="text-body-secondary">경매 종료 기한 : [ 00 : 00 : 00 ]</small>
+                                <div class="text-end">
+                                    <small class="text-body-secondary text-end"
+                                           th:text="'남은 시간: ' + ${#temporals.format(timeRemainingService.calculateTimeRemainingForItem(item.id), 'H:mm:ss')}"></small>
+                                </div>
                             </div>
                         </div>
                     </div>

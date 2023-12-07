@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link th:href="@{/css/AuctionItems.css}" rel="stylesheet">
-
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
 <body>
@@ -31,16 +31,19 @@
         </div>
     </section>
 
-    <div class="album py-5 bg-body-tertiary" th:fragment="itemsFragment">
+
+    <div th:fragment="itemsFragment">
         <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                <div class="col"  th:each="item : ${item}">
+                <div class="col" th:each="item, index : ${item}">
                     <div class="card shadow-sm">
-<!--                        th:href="@{'/item/detail/' + ${item.id}}"-->
-                        <a th:href="@{/item/detail/{id}(id=${item.id})}"> <img th:src="${item.url}" class="bd-placeholder-img card-img-top" width="100%"
-                                          height="225"> </a>
+                        <!-- 아이템 이미지 및 정보 표시 -->
+                        <a th:href="@{/item/detail/{id}(id=${item.id})}">
+                            <img th:src="${item.url}" class="bd-placeholder-img card-img-top" width="100%" height="225">
+                        </a>
                         <div class="card-body">
-                            <p class="card-text" th:text="${item.title}">경매 아이템 이름 </p>
+                            <p>상태 : <span th:text="${item.enabled}"></span> </p>
+                            <p class="card-text" th:text="${item.title}">경매 아이템 이름</p>
                             <p class="card-text" th:text="${item.info}">경매 아이템 설명</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
@@ -48,10 +51,13 @@
                                     <p class="card-text px-2" data-th-text="${#numbers.formatInteger(item.price, 3, 'COMMA') + '원'}"></p>
                                 </div>
                             </div>
-                            <small class="text-body-secondary text-end">경매 종료 기한 : [ 00 : 00 : 00 ]</small>
+                            <div class="text-body-secondary text-end">
+                                <span>남은시간 : </span>
+                                <span class="countdown" th:attr="data-countdown-millis=${remainingMillisList[__${index.index}__]}"></span>
+                            </div>
                             <div class="text-end">
                                 <small class="text-body-secondary text-end">조회수 : </small>
-                                <small class="text-body-secondary text-end"th:text="${item.view_count}"></small>
+                                <small class="text-body-secondary text-end" th:text="${item.view_count}"></small>
                             </div>
                         </div>
                     </div>
@@ -59,6 +65,43 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            // 모든 countdown 클래스를 가진 엘리먼트를 찾습니다.
+            $('.countdown').each(function() {
+                var $this = $(this);
+                var countdownMillis = parseInt($this.data('countdown-millis'));
+
+                // 갱신 함수를 정의합니다.
+                function updateCountdown() {
+                    var seconds = Math.floor(countdownMillis / 1000);
+                    var hours = Math.floor(seconds / 3600);
+                    var minutes = Math.floor((seconds % 3600) / 60);
+                    var remainingSeconds = seconds % 60;
+
+                    $this.text(hours + '시간 ' + minutes + '분 ' + remainingSeconds + '초');
+
+                    // 1초 간격으로 갱신합니다.
+                    countdownMillis -= 1000;
+
+                    // 시간이 초과되면 타이머를 중지합니다.
+                    if (countdownMillis < 0) {
+                        clearInterval(intervalId);
+                        $this.text('경매 종료');
+                    }
+                }
+
+                // 초기 호출 및 1초마다 갱신합니다.
+                updateCountdown();
+                var intervalId = setInterval(updateCountdown, 1000);
+            });
+        });
+    </script>
+
+
+
+
+
     <!-- footer 시작 -->
     <div th:insert="~{/common/footer :: footerFragment}"></div>
     <!-- footer 끝  -->

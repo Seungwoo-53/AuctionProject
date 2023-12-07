@@ -12,13 +12,15 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
+import java.time.Duration;
 @Service
 public class ItemService {
 
@@ -32,13 +34,26 @@ public class ItemService {
     private MemberItemBackupRepository memberItemBackupRepository;
     @Autowired
     private HttpSession httpSession;
-
+    @Autowired
+    private TimeRemainingService timeRemainingService;
+    @Autowired
+    private MemberService memberService;
 
     public void deleteItem(Long id){
         itemRepository.deleteById(id);
     }
     private static final String LAST_VIEWED_TIME_MAP_KEY = "lastViewedTimeMap";
-
+    // 타임 스탬프 찍기
+    public void updateItemValidity() {
+        List<Item> items = itemRepository.findAll();
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        for (Item item : items) {
+            if (item.getDate().isBefore(currentDateTime)) {
+                item.setEnabled(false);
+            }
+        }
+        itemRepository.saveAll(items);
+    }
     @Transactional
     public void backupAndDeleteMemberItem(Long itemId) {
         List<MemberItem> memberItemsToDelete = memberItemRepository.findByItem_Id(itemId);
@@ -56,6 +71,27 @@ public class ItemService {
         }
     }
     @Transactional
+    public void addPoints(Long itemId) {
+        // MemberItemRepository를 사용하여 itemId에 해당하는 price를 가져옵니다.
+        int price = memberItemRepository.findPriceByItemId(itemId);
+        // Assuming you have the item_id you want to use
+        // Use MemberItemRepository to find the MemberItem by item_id
+                MemberItem memberItem = memberItemRepository.findByItemId(itemId);
+                if (memberItem != null) {
+                    // Access the associated Member through the member field
+                    Member member = memberItem.getMember();
+                    // Now you have access to the Member associated with the given item_id
+                    if (member != null) {
+                        // Do something with the Member
+                        member.setPoint(member.getPoint() + price);
+                        memberRepository.save(member);
+                        System.out.println("Member ID: " + member.getId());
+                        System.out.println("Member Username: " + member.getUsername());
+                        System.out.println("Member Point: " + member.getPoint());
+                    }
+                }
+    }
+    @Transactional
     public void updateItemPriceAndLinkToMember(Long memberId, Long itemId, int newPrice) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new EntityNotFoundException("Member not found"));
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new EntityNotFoundException("Item not found"));
@@ -65,29 +101,28 @@ public class ItemService {
         itemRepository.save(item);
 
         backupAndDeleteMemberItem(itemId);
-        memberItemRepository.deleteByItem_Id(itemId);
 
         // Member_Item 테이블에 연결 추가
         memberItem.setMember(member);
         memberItem.setItem(item);
         memberItem.setPrice(newPrice);
         memberItemRepository.save(memberItem);
-
-
-
     }
     public Optional<Item> findById(Long itemId) {
         // 아이템을 아이디로 찾아옴
         return itemRepository.findById(itemId);
     }
-    public void updateItem(Long id, Item item) {
+    public void updateItem(Long id, Item newItem) {
         // 아이템 업데이트 로직 수행
-       Optional<Item> Item = itemRepository.findById(id);
-        if (item != null) {
-            item.setTitle(item.getTitle());
-            item.setInfo(item.getInfo());
-            item.setPrice(item.getPrice());
-            item.setUrl(item.getUrl());
+        Optional<Item> itemOptional = itemRepository.findById(id);
+        if (itemOptional.isPresent()) {
+            Item item  = itemOptional.get();
+            item.setTitle(newItem.getTitle());
+            item.setInfo(newItem.getInfo());
+            item.setPrice(newItem.getPrice());
+            item.setUrl(newItem.getUrl());
+            item.setDate(LocalDateTime.now());
+            item.setEnabled(true);
             // 다른 필요한 필드도 업데이트
 
             itemRepository.save(item);

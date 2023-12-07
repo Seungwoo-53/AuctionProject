@@ -11,6 +11,7 @@ import com.auction.WebAuction.repository.MemberItemRepository;
 import com.auction.WebAuction.repository.MemberRepository;
 import com.auction.WebAuction.service.ItemService;
 import com.auction.WebAuction.service.MemberService;
+import com.auction.WebAuction.service.TimeRemainingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,6 +23,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -41,6 +44,8 @@ public class ItemController {
     private ItemService itemService;
     @Autowired
     private MemberService memberService;
+    @Autowired
+    private TimeRemainingService timeRemainingService;
 
    @GetMapping("/detail/{id}")
     public String ItemDetail(@PathVariable Long id, Model model) {
@@ -58,8 +63,6 @@ public class ItemController {
 
        String memberUsername = memberItemRepository.findMemberUsernameByItemId(id);
        model.addAttribute("memberUsername", memberUsername);
-
-
        model.addAttribute(views);
 
         if (itemOptional.isPresent()) {
@@ -93,19 +96,17 @@ public class ItemController {
                     if (price <= currentPoints) {
                         // 아이템의 가격 업데이트
                         item.setPrice(price);
-                        itemRepository.save(item);
+                        // 포인트 차감
+                        memberService.deductPoints(member.getId(), price);
+
+                        itemService.addPoints(id);
 
                         // 입찰 내역 업데이트
                         itemService.updateItemPriceAndLinkToMember(member.getId(), item.getId(), price);
 
-                        // 포인트 차감
-                        memberService.deductPoints(member.getId(), price);
-
-
-
-
 
                         // 모델에 결과 값 추가
+                        itemRepository.save(item);
                         model.addAttribute("price", item.getPrice());
                         model.addAttribute("points", member.getPoint());
                         // 성공 메시지 반환
@@ -150,6 +151,17 @@ public class ItemController {
         if(result.hasErrors()){
            return "/";
         }
+        // 현재 날짜와 시간
+        LocalDateTime registrationDate = LocalDateTime.now();
+        // 만료 시간 설정 (등록한 날짜부터 24시간 뒤)
+        LocalDateTime expirationDate = registrationDate.plus(24, ChronoUnit.HOURS);
+        // 만료 시간 설정
+        item.setDate(expirationDate);
+
+        // 기타 필요한 설정
+        item.setEnabled(true);
+
+        // 서비스를 통한 저장 등의 로직 수행
         itemService.save(item);
         return "redirect:/";
     }

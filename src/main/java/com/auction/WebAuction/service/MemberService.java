@@ -38,12 +38,8 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-    @Transactional
-    public void returnPoints(Long memberId, int points) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new EntityNotFoundException("Member not found"));
-        member.setPoint(member.getPoint() + points);
-        memberRepository.save(member);
-    }
+
+
     @Transactional
     public void deductPoints(Long memberId, int points) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new EntityNotFoundException("Member not found"));

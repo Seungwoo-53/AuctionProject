@@ -23,14 +23,8 @@ public class Item {
     private long view_count;
     private LocalDateTime date;
     private String url;
+    private Boolean enabled;
 
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
 
     @OneToMany(mappedBy = "item")
     private List<MemberItem> memberItems = new ArrayList<>();
