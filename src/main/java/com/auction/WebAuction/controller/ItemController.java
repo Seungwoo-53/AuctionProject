@@ -4,7 +4,10 @@ package com.auction.WebAuction.controller;
 import com.auction.WebAuction.error.InsufficientPointsException;
 import com.auction.WebAuction.model.Item;
 import com.auction.WebAuction.model.Member;
+import com.auction.WebAuction.model.MemberItem;
+import com.auction.WebAuction.model.MemberItemBackup;
 import com.auction.WebAuction.repository.ItemRepository;
+import com.auction.WebAuction.repository.MemberItemRepository;
 import com.auction.WebAuction.repository.MemberRepository;
 import com.auction.WebAuction.service.ItemService;
 import com.auction.WebAuction.service.MemberService;
@@ -33,6 +36,8 @@ public class ItemController {
     @Autowired
     private MemberRepository memberRepository;
     @Autowired
+    private MemberItemRepository memberItemRepository;
+    @Autowired
     private ItemService itemService;
     @Autowired
     private MemberService memberService;
@@ -42,14 +47,17 @@ public class ItemController {
         Optional<Item> itemOptional = itemRepository.findById(id);
         Long views = itemService.incrementViewCount(id);
         System.out.println("Received ID: " + id);
-       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-       String username = authentication.getName();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
 
        Member member = memberRepository.findByUsername(username);
        int point = member.getPoint();
        model.addAttribute("member",member);
        // 이제 'point' 변수에 해당 사용자의 포인트가 들어있음
        model.addAttribute("point", point);
+
+       String memberUsername = memberItemRepository.findMemberUsernameByItemId(id);
+       model.addAttribute("memberUsername", memberUsername);
 
 
        model.addAttribute(views);
@@ -92,6 +100,10 @@ public class ItemController {
 
                         // 포인트 차감
                         memberService.deductPoints(member.getId(), price);
+
+
+
+
 
                         // 모델에 결과 값 추가
                         model.addAttribute("price", item.getPrice());

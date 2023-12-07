@@ -5,11 +5,11 @@ import lombok.Data;
 
 @Data
 @Entity
-public class MemberItem {
+public class MemberItemBackup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long memberItemId;
+    private Long memberItemBackupId;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
@@ -21,4 +21,5 @@ public class MemberItem {
 
     private int price;
 
+    // 추가적인 필드도 가능
 }

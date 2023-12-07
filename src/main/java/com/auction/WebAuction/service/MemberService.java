@@ -5,6 +5,8 @@ import com.auction.WebAuction.error.InsufficientPointsException;
 import com.auction.WebAuction.model.Member;
 import com.auction.WebAuction.model.MemberItem;
 import com.auction.WebAuction.model.Role;
+import com.auction.WebAuction.repository.ItemRepository;
+import com.auction.WebAuction.repository.MemberItemRepository;
 import com.auction.WebAuction.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -19,7 +21,10 @@ public class MemberService {
 
     @Autowired
     private MemberRepository memberRepository;
-
+    @Autowired
+    private MemberItemRepository memberItemRepository;
+    @Autowired
+    private ItemRepository itemRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
     public Member save(Member member){
@@ -32,13 +37,13 @@ public class MemberService {
         member.setPoint(10000);
         return memberRepository.save(member);
     }
+
     @Transactional
     public void returnPoints(Long memberId, int points) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new EntityNotFoundException("Member not found"));
         member.setPoint(member.getPoint() + points);
         memberRepository.save(member);
     }
-
     @Transactional
     public void deductPoints(Long memberId, int points) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new EntityNotFoundException("Member not found"));

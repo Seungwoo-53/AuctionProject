@@ -33,7 +33,7 @@
             </div>
         </div>
         <div>
-            <p>현재 낙찰자 이름 : <span th:text="${member.username}"></span></p>
+            <p>현재 낙찰자 이름 : <span th:text="${memberUsername}"></span></p>
             <p>현재 금액 : <span id="price" data-th-text="${#numbers.formatInteger(item.price, 3, 'COMMA') + '원'}">0.00</span></p>
 <!--            <p>현재 보유 포인트 : </p> <span id="point" th:text="${point}"></span>-->
             <p>현재 보유 포인트 : <span id="point" data-th-text="${#numbers.formatInteger(point, 3, 'COMMA') + '원'}"></span></p>

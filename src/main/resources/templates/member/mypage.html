@@ -17,7 +17,22 @@
     <!-- header -->
 
     <h2>마이페이지</h2>
-
+    <table>
+        <thead>
+        <tr>
+            <th>Item</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- auctionList를 순회하면서 각 MemberItemBackup을 참조하고 데이터를 출력합니다. -->
+        <tr th:each="auctionItem : ${auctionList}">
+            <!-- auctionItem은 현재 순회 중인 MemberItemBackup 객체를 나타냅니다. -->
+            <td th:text="${auctionItem.item.title}"></td>
+            <td th:text="${auctionItem.price}"></td>
+        </tr>
+        </tbody>
+    </table>
     
     <!-- footer 시작 -->
     <div th:insert="~{/common/footer :: footerFragment}"></div>
