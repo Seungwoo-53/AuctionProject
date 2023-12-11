@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link th:href="@{/css/itemRegister.css}" rel="stylesheet">
+    <link th:href="@{/css/AuctionItems.css}" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
@@ -27,7 +28,7 @@
                 <th>title</th>
                 <th>info</th>
                 <th>price</th>
-                <th>status</th>
+                <th colspan="2">status</th>
                 <!-- 추가적인 필드들을 필요에 따라 추가 -->
             </tr>
             </thead>
@@ -37,7 +38,10 @@
                 <td th:text="${item.id}"></td>
                 <td th:text="${item.title}"></td>
                 <td th:text="${item.info}"></td>
-                <td th:text="${item.price}"></td>
+                <td>
+                    <span th:if="${item.price >= 1000}" data-th-text="${#numbers.formatInteger(item.price, 3, 'COMMA') + '원'}"></span>
+                    <span th:if="${item.price < 1000}" th:text="${item.price + '원'}"></span>
+                </td>
                 <td><a th:href="@{/item/editRegister/{id}(id=${item.id})}" class="btn btn-primary w-100 py-2 btn-secondary my-3" > 수정</a></td>
                 <form  th:action="@{/item/delRegister/{id}(id=${item.id})}"  th:object="${item}"  method="post">
                     <input type="hidden" name="_method" value="delete"/>

@@ -1,5 +1,5 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="utf-8">
@@ -7,32 +7,93 @@
     <title>경매</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link href="/static/css/AuctionItems.css" rel="stylesheet">
-
+    <link th:href="@{/css/AuctionItems.css}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
 <body>
     <!-- header -->
     <div th:insert="~{/common/header :: headerFragment}"></div>
     <!-- header -->
+    <div th:fragment="itemsFragment">
+        <div class="container">
+            <p><span sec:authentication="name">사용자 이름</span> 님이 경매에 참여한 목록입니다.</p>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                <div class="col" th:each="item, index : ${item}">
+                    <div class="card shadow-sm position-relative"> <!-- position-relative 클래스 추가 -->
+                        <span th:class="${item.enabled} ? 'dot green-dot' : 'dot red-dot'"></span>
+                        <!-- 아이템 이미지 및 정보 표시 -->
+                        <a th:href="@{/item/detail/{id}(id=${item.id})}" class="d-block position-relative"> <!-- position-relative 클래스 추가 -->
+                            <img th:src="${item.url}" class="bd-placeholder-img card-img-top" width="100%" height="225">
+                            <div th:if="${not item.enabled}" class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background-color: rgba(0, 0, 0, 0.5);">
+                                <span style="color: white; font-size: 20px;">종료</span>
+                            </div>
+                        </a>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <p>상품명 : </p>
+                                    <p class="card-text px-2"  th:text="${item.title}"></p>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <p>상세 설명 : </p>
+                                    <p class="card-text px-2"  th:text="${item.info}"></p>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <p>현재 금액 : </p>
+                                    <p class="card-text px-2" data-th-text="${#numbers.formatInteger(item.price, 3, 'COMMA') + '원'}"></p>
+                                </div>
+                            </div>
+                            <div class="text-body-secondary text-end">
+                                <span>남은시간 : </span>
+                                <span class="countdown" th:attr="data-countdown-millis=${remainingMillisList[__${index.index}__]}"></span>
+                            </div>
+                            <div class="text-end">
+                                <small class="text-body-secondary text-end">조회수 : </small>
+                                <small class="text-body-secondary text-end" th:text="${item.view_count}"></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            // 모든 countdown 클래스를 가진 엘리먼트를 찾습니다.
+            $('.countdown').each(function() {
+                var $this = $(this);
+                var countdownMillis = parseInt($this.data('countdown-millis'));
 
-    <h2>마이페이지</h2>
-    <table>
-        <thead>
-        <tr>
-            <th>Item</th>
-            <th>Price</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- auctionList를 순회하면서 각 MemberItemBackup을 참조하고 데이터를 출력합니다. -->
-        <tr th:each="auctionItem : ${auctionList}">
-            <!-- auctionItem은 현재 순회 중인 MemberItemBackup 객체를 나타냅니다. -->
-            <td th:text="${auctionItem.item.title}"></td>
-            <td th:text="${auctionItem.price}"></td>
-        </tr>
-        </tbody>
-    </table>
+                // 갱신 함수를 정의합니다.
+                function updateCountdown() {
+                    var seconds = Math.floor(countdownMillis / 1000);
+                    var hours = Math.floor(seconds / 3600);
+                    var minutes = Math.floor((seconds % 3600) / 60);
+                    var remainingSeconds = seconds % 60;
+
+                    $this.text(hours + '시간 ' + minutes + '분 ' + remainingSeconds + '초');
+
+                    // 1초 간격으로 갱신합니다.
+                    countdownMillis -= 1000;
+
+                    // 시간이 초과되면 타이머를 중지합니다.
+                    if (countdownMillis < 0) {
+                        clearInterval(intervalId);
+                        $this.text('경매 종료');
+                    }
+                }
+
+                // 초기 호출 및 1초마다 갱신합니다.
+                updateCountdown();
+                var intervalId = setInterval(updateCountdown, 1000);
+            });
+        });
+    </script>
     
     <!-- footer 시작 -->
     <div th:insert="~{/common/footer :: footerFragment}"></div>

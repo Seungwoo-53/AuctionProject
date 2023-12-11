@@ -21,6 +21,6 @@ public interface MemberItemRepository extends JpaRepository<MemberItem,Long> {
     MemberItem findByItemId(Long memberItemId);
     @Query("SELECT mi.member.username FROM MemberItem mi WHERE mi.item.id = :itemId")
     String findMemberUsernameByItemId(@Param("itemId") Long itemId);
-
+    void deleteByItemId(Long itemId);
 
 }

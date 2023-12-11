@@ -1,6 +1,7 @@
 package com.auction.WebAuction.controller;
 
 
+import com.auction.WebAuction.model.Item;
 import com.auction.WebAuction.model.Member;
 import com.auction.WebAuction.model.MemberItemBackup;
 import com.auction.WebAuction.repository.MemberItemBackupRepository;
@@ -16,8 +17,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/member")
@@ -49,29 +54,17 @@ public class MemberController {
     }
 
     @GetMapping("/mypage")
-    public String mypage(Model model){
-        // 현재 로그인한 유저의 username을 가져옵니다.
-        String username = getLoggedInUsername();
+    public String mypage(Model model) {
+        List<Item> items = memberService.getMyItems();
+        List<Long> remainingMillisList = items.stream()
+                .map(item -> Duration.between(LocalDateTime.now(), item.getDate()).toMillis())
+                .collect(Collectors.toList());
 
-        // username을 기반으로 Member 엔터티를 조회하여 해당 유저의 id를 가져옵니다.
-        Member loggedInMember = memberRepository.findByUsername(username);
-        Long loggedInUserId = loggedInMember.getId();
-
-        // 현재 로그인한 유저의 id를 기반으로 MemberItemBackup을 조회하여 해당 유저의 참여 경매 목록을 가져옵니다.
-        List<MemberItemBackup> auctionList = memberItemBackupRepository.findByMember_Id(loggedInUserId);
-
-        // 모델에 경매 목록을 추가하여 뷰로 전달합니다.
-        model.addAttribute("auctionList", auctionList);
-
-
-        // 다른 필요한 정보들도 모델에 추가
+        model.addAttribute("remainingMillisList", remainingMillisList);
+        model.addAttribute("item", items);
         return "/member/mypage";
     }
 
-    // 현재 로그인한 유저의 id를 가져오는 메서드
-    private String getLoggedInUsername() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication.getName();
-    }
+
 
 }

@@ -1,15 +1,3 @@
-.modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            z-index: 1000;
-        }
-
 .bd-placeholder-img {
     font-size: 1.125rem;
     text-anchor: middle;
@@ -88,3 +76,22 @@
   .bd-mode-toggle .dropdown-menu .active .bi {
     display: block !important;
   }
+/* CSS 파일에 추가 */
+.dot {
+   display: inline-block;
+   width: 10px;
+   height: 10px;
+   border-radius: 50%;
+   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* 기본 그림자 효과 추가 */
+   margin: 10px; /* 간격 추가 */
+}
+
+.green-dot {
+   background-color: limegreen;
+   box-shadow: 0 0 5px rgba(0, 128, 0, 0.5); /* 초록색 그림자 효과 추가 */
+}
+
+.red-dot {
+   background-color: orangered;
+   box-shadow: 0 0 5px rgba(255, 0, 0, 0.5); /* 빨간색 그림자 효과 추가 */
+}

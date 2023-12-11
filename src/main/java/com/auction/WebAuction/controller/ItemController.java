@@ -47,28 +47,27 @@ public class ItemController {
     @Autowired
     private TimeRemainingService timeRemainingService;
 
-   @GetMapping("/detail/{id}")
+    @GetMapping("/detail/{id}")
     public String ItemDetail(@PathVariable Long id, Model model) {
         Optional<Item> itemOptional = itemRepository.findById(id);
-        Long views = itemService.incrementViewCount(id);
-        System.out.println("Received ID: " + id);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-
-       Member member = memberRepository.findByUsername(username);
-       int point = member.getPoint();
-       model.addAttribute("member",member);
-       // 이제 'point' 변수에 해당 사용자의 포인트가 들어있음
-       model.addAttribute("point", point);
-
-       String memberUsername = memberItemRepository.findMemberUsernameByItemId(id);
-       model.addAttribute("memberUsername", memberUsername);
-       model.addAttribute(views);
 
         if (itemOptional.isPresent()) {
             Item item = itemOptional.get();
             model.addAttribute("item", item);
-            model.addAttribute("item", itemOptional.get());
+
+            Long views = itemService.incrementViewCount(id);
+            model.addAttribute("views", views);
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String username = authentication.getName();
+            Member member = memberRepository.findByUsername(username);
+            int point = member.getPoint();
+            model.addAttribute("member", member);
+            model.addAttribute("point", point);
+
+            String memberUsername = memberItemRepository.findMemberUsernameByItemId(id);
+            model.addAttribute("memberUsername", memberUsername);
+
             return "/item/detail";
         } else {
             return "redirect:/";
@@ -148,6 +147,9 @@ public class ItemController {
 
     @PostMapping("/newRegister")
     public String newRegister(Item item, BindingResult result){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Member member = memberRepository.findByUsername(username);
         if(result.hasErrors()){
            return "/";
         }
@@ -157,12 +159,15 @@ public class ItemController {
         LocalDateTime expirationDate = registrationDate.plus(24, ChronoUnit.HOURS);
         // 만료 시간 설정
         item.setDate(expirationDate);
-
         // 기타 필요한 설정
         item.setEnabled(true);
-
-        // 서비스를 통한 저장 등의 로직 수행
         itemService.save(item);
+        MemberItem memberItem = new MemberItem();
+        memberItem.setItem(item);
+        memberItem.setMember(member);
+        memberItem.setPrice(item.getPrice());
+        // 서비스를 통한 저장 등의 로직 수행
+        memberItemRepository.save(memberItem);
         return "redirect:/";
     }
 

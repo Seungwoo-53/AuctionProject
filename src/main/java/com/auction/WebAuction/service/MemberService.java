@@ -2,18 +2,21 @@ package com.auction.WebAuction.service;
 
 
 import com.auction.WebAuction.error.InsufficientPointsException;
-import com.auction.WebAuction.model.Member;
-import com.auction.WebAuction.model.MemberItem;
-import com.auction.WebAuction.model.Role;
+import com.auction.WebAuction.model.*;
 import com.auction.WebAuction.repository.ItemRepository;
+import com.auction.WebAuction.repository.MemberItemBackupRepository;
 import com.auction.WebAuction.repository.MemberItemRepository;
 import com.auction.WebAuction.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,6 +30,9 @@ public class MemberService {
     private ItemRepository itemRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private MemberItemBackupRepository memberItemBackupRepository;
     public Member save(Member member){
         String encodedPassword = passwordEncoder.encode(member.getUserpass());
         member.setUserpass(encodedPassword);
@@ -51,6 +57,18 @@ public class MemberService {
         } else {
             throw new InsufficientPointsException("Insufficient points to make the bid.");
         }
+    }
+
+    public List<Item> getMyItems() {
+        // 현재 로그인한 사용자 정보 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Member member = memberRepository.findByUsername(username);
+
+        List<Long> itemIds = memberItemBackupRepository.findDistinctItemIdsByMember_Id(member.getId());
+
+        // itemIds로 아이템 데이터 조회
+        return itemRepository.findAllById(itemIds);
     }
 
 

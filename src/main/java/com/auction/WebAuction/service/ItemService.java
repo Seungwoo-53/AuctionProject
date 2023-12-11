@@ -39,7 +39,10 @@ public class ItemService {
     @Autowired
     private MemberService memberService;
 
+    @Transactional
     public void deleteItem(Long id){
+        memberItemBackupRepository.deleteByItemId(id);
+        memberItemRepository.deleteByItemId(id);
         itemRepository.deleteById(id);
     }
     private static final String LAST_VIEWED_TIME_MAP_KEY = "lastViewedTimeMap";
@@ -68,6 +71,19 @@ public class ItemService {
 
             // 기존 테이블에서 삭제
             memberItemRepository.delete(memberItem);
+        }
+    }
+    @Transactional
+    public void backupAndNonDeleteMemberItem(Long itemId) {
+        List<MemberItem> memberItemsToDelete = memberItemRepository.findByItem_Id(itemId);
+
+        for (MemberItem memberItem : memberItemsToDelete) {
+            // 백업 테이블에 데이터 이동
+            MemberItemBackup memberItemBackup = new MemberItemBackup();
+            memberItemBackup.setMember(memberItem.getMember());
+            memberItemBackup.setItem(memberItem.getItem());
+            memberItemBackup.setPrice(memberItem.getPrice());
+            memberItemBackupRepository.save(memberItemBackup);
         }
     }
     @Transactional
@@ -107,6 +123,7 @@ public class ItemService {
         memberItem.setItem(item);
         memberItem.setPrice(newPrice);
         memberItemRepository.save(memberItem);
+        backupAndNonDeleteMemberItem(itemId);
     }
     public Optional<Item> findById(Long itemId) {
         // 아이템을 아이디로 찾아옴

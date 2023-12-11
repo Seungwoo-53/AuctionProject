@@ -24,24 +24,26 @@
                 </div>
 
                 <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
-                    <li><a href="#" class="nav-link px-2 link-secondary">경매요청</a></li>
-                    <li><a href="#" class="nav-link px-2 link-secondary">질문게시판</a></li>
-                    <li><a th:href="@{/item/register}" class="nav-link px-2 link-secondary">아이템 등록</a></li>
+<!--                    <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>-->
+<!--                    <li><a href="#" class="nav-link px-2 link-secondary">경매요청</a></li>-->
+<!--                    <li><a href="#" class="nav-link px-2 link-secondary">질문게시판</a></li>-->
+                    <li><a th:href="@{/item/register}" class="nav-link px-2 link-secondary" sec:authorize="hasRole('ROLE_ADMIN')">아이템 관리</a></li>
                 </ul>
 
-                <div class="col-md-3 text-end px-2">
+                <div class="col-md-3 mb-2 mb-md-0 px-2 text-end">
+
                     <a th:href="@{/member/login}" class="btn btn-light" sec:authorize="!isAuthenticated()">로그인</a>
                     <a th:href="@{/member/signup}" class="btn btn-secondary" sec:authorize="!isAuthenticated()">회원가입</a>
                     <div sec:authorize="isAuthenticated()">
                     <a th:href="@{/member/mypage}"><i class="fa-regular fa-circle-user fa-xl" style="color: #a9b4c7;"></i></a>
-                        <span sec:authentication="name">사용자  </span>
-                        <span sec:authentication="principal.authorities">권한  </span>
-                        <form th:action="@{/logout}" method="post">
+                     <span sec:authentication="name">사용자</span>
+                     <span sec:authentication="principal.authorities">권한 </span>
+                     <form th:action="@{/logout}" method="post">
                             <button class="btn btn-secondary" type="submit">로그아웃</button>
                         </form>
                     </div>
-                </div>
+                    </div>
+
             </header>
         </div>
     </nav>

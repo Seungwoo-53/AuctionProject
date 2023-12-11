@@ -32,20 +32,30 @@
                 <p th:text="${item.info}"></p>
             </div>
         </div>
-        <div>
-            <p>현재 낙찰자 이름 : <span th:text="${memberUsername}"></span></p>
-            <p>현재 금액 : <span id="price" data-th-text="${#numbers.formatInteger(item.price, 3, 'COMMA') + '원'}">0.00</span></p>
-<!--            <p>현재 보유 포인트 : </p> <span id="point" th:text="${point}"></span>-->
-            <p>현재 보유 포인트 : <span id="point" data-th-text="${#numbers.formatInteger(point, 3, 'COMMA') + '원'}"></span></p>
+        <div class="row py-lg">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <p>현재 낙찰자 이름 : <span th:text="${memberUsername}"></span></p>
+                <p>현재 금액 :
+                    <span th:if="${item.price >= 1000}" data-th-text="${#numbers.formatInteger(item.price, 3, 'COMMA') + '원'}"></span>
+                    <span th:if="${item.price < 1000}" th:text="${item.price + '원'}"></span>
+                </p>
+
+                <p>
+                    <span sec:authentication="name"></span>
+                    <span>님의 보유 포인트 :</span>
+                    <span th:if="${point >= 1000}" th:text="${#numbers.formatInteger(point, 3, 'COMMA')} + '원'"></span>
+                    <span th:if="${point < 1000}" th:text="${point + '원'}">
+                    </span>
+                </p>
+            </div>
         </div>
-        <form id="priceForm" th:action="@{/item/detail/{id}(id=${item.id})}"  method="post">
-            <!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> -->
-            <label for="inputPrice">입력 금액 : </label>
-            <input type="text" id="inputPrice" name="price" th:value="${item.price}"/>
+
+        <form id="priceForm" th:action="@{/item/detail/{id}(id=${item.id})}" method="post">
+            <label for="inputPrice">입력 금액: </label>
+            <input type="text" id="inputPrice" name="price" th:value="${item.price}" />
             <div>
-<!--                <button type="button" onclick="updatePrice()">입찰</button>-->
-                <button type="submit">입찰</button>
-                <button type="button">빠른 입찰</button>
+                <button type="submit" th:if="${item.enabled}" class="btn-bd-primary">입찰</button>
+                <button type="button" th:if="${item.enabled}" class="btn-bd-primary">빠른 입찰</button>
             </div>
         </form>
         <small class="text-body-secondary text-end">조회수 : </small>
