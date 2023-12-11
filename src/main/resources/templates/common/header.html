@@ -31,19 +31,16 @@
                 </ul>
 
                 <div class="col-md-3 mb-2 mb-md-0 px-2 text-end">
-
+                    <form th:action="@{/logout}" method="post">
                     <a th:href="@{/member/login}" class="btn btn-light" sec:authorize="!isAuthenticated()">로그인</a>
                     <a th:href="@{/member/signup}" class="btn btn-secondary" sec:authorize="!isAuthenticated()">회원가입</a>
                     <div sec:authorize="isAuthenticated()">
-                    <a th:href="@{/member/mypage}"><i class="fa-regular fa-circle-user fa-xl" style="color: #a9b4c7;"></i></a>
+                    <a th:href="@{/member/mypage}"><i class="fa-regular fa-circle-user fa-xl" style="color: #a9b4c7; font-size: 1.75em;"></i></a>
                      <span sec:authentication="name">사용자</span>
                      <span sec:authentication="principal.authorities">권한 </span>
-                     <form th:action="@{/logout}" method="post">
                             <button class="btn btn-secondary" type="submit">로그아웃</button>
-                        </form>
-                    </div>
-                    </div>
-
+                    </form>
+                </div>
             </header>
         </div>
     </nav>

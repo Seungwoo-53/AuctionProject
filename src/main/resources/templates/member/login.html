@@ -6,65 +6,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>경매</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
     <link th:href="@{/css/login.css}" rel="stylesheet">
 </head>
 
 <body class="d-flex align-items-center py-4 bg-body-tertiary">
-    <main class="form-signin w-100 m-auto">
-        <a th:href="@{/}" class="mb-4 text-center" >
-            <i class="fa-solid fa-frog" style="font-size: 3em; color : #6c757d"><span>Auction</span></i>
-            <!-- <h1 class="h3 mb-3 fw-normal">Auction</h1> -->
-        </a>
-        <div th:if="${param.error}" class="alert alert-danger" role="alert" >
-            Invalid username and password.
+<main class="form-signin w-100 m-auto">
+    <a th:href="@{/}" class="mb-4 text-center">
+        <i class="fa-solid fa-frog" style="font-size: 3em; color : #6c757d"><span>Auction</span></i>
+        <!-- <h1 class="h3 mb-3 fw-normal">Auction</h1> -->
+    </a>
+    <div th:if="${param.error}" class="alert alert-danger" role="alert">
+        Invalid username and password.
+    </div>
+    <div th:if="${param.logout}" class="alert alert-primary" role="alert">
+        You have been logged out.
+    </div>
+    <form th:action="@{/member/login}" method="post">
+        <div class="form-floating">
+            <input type="text" class="form-control" id="username" name="username">
+            <label for="username">ID</label>
         </div>
-        <div th:if="${param.logout}" class="alert alert-primary" role="alert">
-            You have been logged out.
+        <div class="form-floating">
+            <input type="password" class="form-control" id="userpass" name="userpass">
+            <label for="userpass">Password</label>
         </div>
-        <form th:action="@{/member/login}" method="post">
-            <div class="form-floating">
-                <input type="text" class="form-control" id="username" name="username">
-                <label for="username">ID</label>
+        <button class="btn btn-primary w-100 py-2 btn-secondary" type="submit">로그인</button>
+    </form>
+
+    <div th:fragment="footerFragment" class="container " style="--bs-gutter-x : 0;">
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+            <ul class="nav col-md-4 list-unstyled d-flex px-2">
+                <li class="ms-2"><a class="text-body-secondary" href="https://github.com/Seungwoo-53" target="_blank"><i
+                        class="fa-brands fa-github"
+                        style="font-size: 1.5em;"></i></a></li>
+                <li class="ms-2"><a class="text-body-secondary"
+                                    href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=tmddn0849@gmail.com"
+                                    target="_blank"><i class="fa-regular fa-envelope"
+                                                       style="font-size: 1.5em;"></i></a></li>
+                <li class="ms-2"><a class="text-body-secondary" href="https://www.youtube.com" target="_blank"><i
+                        class="fa-brands fa-youtube"
+                        style="font-size: 1.5em;"></i></a></li>
+            </ul>
+
+            <div class="col-md-4 d-flex px-2">
+                <a th:href="@{/member/signup}" class="btn btn-primary w-100 py-2 btn-secondary" type="submit">회원가입</a>
             </div>
-            <div class="form-floating">
-                <input type="password" class="form-control" id="userpass" name="userpass">
-                <label for="userpass">Password</label>
-            </div>
-            <button class="btn btn-primary w-100 py-2 btn-secondary" type="submit">로그인</button>
-        </form>
 
-        <div th:fragment="footerFragment" class="container " style="--bs-gutter-x : 0;">
-            <footer  class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-                <ul class="nav col-md-4 list-unstyled d-flex px-2">
-                    <li class="ms-2"><a class="text-body-secondary" href="#"><i class="fa-brands fa-github"
-                                style="font-size: 1.5em;"></i></a></li>
-                    <li class="ms-2"><a class="text-body-secondary" href="#"><i class="fa-brands fa-instagram"
-                                style="font-size: 1.5em;"></i></a></li>
-                    <li class="ms-2"><a class="text-body-secondary" href="#"><i class="fa-brands fa-youtube"
-                                style="font-size: 1.5em;"></i></a></li>
-                </ul>
 
-                <div class="col-md-4 d-flex px-2">
-                    <a th:href="@{/member/signup}" class="btn btn-primary w-100 py-2 btn-secondary" type="submit">회원가입</a>
-                </div>
-    
-              
-            </footer>
-        </div>
-      </main>
+        </footer>
+    </div>
+</main>
 
-  
 
-    <script src="https://kit.fontawesome.com/60b75f9d43.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+<script src="https://kit.fontawesome.com/60b75f9d43.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
         crossorigin="anonymous"></script>
 </body>

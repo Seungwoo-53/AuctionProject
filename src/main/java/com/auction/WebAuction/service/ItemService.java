@@ -88,17 +88,11 @@ public class ItemService {
     }
     @Transactional
     public void addPoints(Long itemId) {
-        // MemberItemRepository를 사용하여 itemId에 해당하는 price를 가져옵니다.
         int price = memberItemRepository.findPriceByItemId(itemId);
-        // Assuming you have the item_id you want to use
-        // Use MemberItemRepository to find the MemberItem by item_id
                 MemberItem memberItem = memberItemRepository.findByItemId(itemId);
                 if (memberItem != null) {
-                    // Access the associated Member through the member field
                     Member member = memberItem.getMember();
-                    // Now you have access to the Member associated with the given item_id
                     if (member != null) {
-                        // Do something with the Member
                         member.setPoint(member.getPoint() + price);
                         memberRepository.save(member);
                         System.out.println("Member ID: " + member.getId());

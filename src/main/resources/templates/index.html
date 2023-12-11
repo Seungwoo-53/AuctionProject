@@ -23,10 +23,10 @@
             <div class="col-lg-6 col-md-8 mx-auto">
                 <h1 class="fw-light">Acution</h1>
                 <p class="lead text-body-secondary">이벤트 경매 Acution 에 오신것을 환영합니다.</p>
-                <p>
-                    <a href="#" class="btn btn-secondary my-2">사이트 사용방법 바로가기</a>
-                    <a href="#" class="btn btn-light my-2">예제</a>
-                </p>
+<!--                <p>-->
+<!--                    <a href="#" class="btn btn-secondary my-2">사이트 사용방법 바로가기</a>-->
+<!--                    <a href="#" class="btn btn-light my-2">예제</a>-->
+<!--                </p>-->
             </div>
         </div>
     </section>
@@ -34,7 +34,7 @@
 
     <div th:fragment="itemsFragment">
         <div class="container">
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" style="--bs-gutter-y: 3em;">
                 <div class="col" th:each="item, index : ${item}">
                     <div class="card shadow-sm position-relative"> <!-- position-relative 클래스 추가 -->
                         <span th:class="${item.enabled} ? 'dot green-dot' : 'dot red-dot'"></span>
