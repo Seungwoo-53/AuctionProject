@@ -53,9 +53,16 @@
         <form id="priceForm" th:action="@{/item/detail/{id}(id=${item.id})}" method="post">
             <label for="inputPrice">입력 금액: </label>
             <input type="text" id="inputPrice" name="price" th:value="${item.price}" />
-            <div>
-                <button type="submit" th:if="${item.enabled}" class="btn-bd-primary">입찰</button>
-                <button type="button" th:if="${item.enabled}" class="btn-bd-primary">빠른 입찰</button>
+            <div class="row">
+                <div class="col-md-5 my-2"> <!-- 여기서 8은 원래의 너비 -->
+                    <!-- 내용을 그대로 유지 -->
+                </div>
+                <div class="col-md-2 my-2"> <!-- 여기서 4는 오른쪽에 차지할 너비 -->
+                    <button type="submit" th:if="${item.enabled}" class="btn btn-primary w-100 py-2 btn-secondary">입찰</button>
+                    <div th:if="${showAuctionConfirmationButton}">
+                                <a class="btn btn-primary w-100 py-2 btn-secondary" th:href="@{/item/final/{id}(id=${item.id})}">경매 아이템 확정</a>
+                    </div>
+                </div>
             </div>
         </form>
         <small class="text-body-secondary text-end">조회수 : </small>

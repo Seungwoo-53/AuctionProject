@@ -25,19 +25,19 @@
         <input type="hidden" name="_method" value="put"/>
 <!--        <input type="hidden" name="id" th:field="*{id}" th:value="${item.id}" />-->
         <div class="form-floating m-5">
-            <input type="text" class="form-control" id="title" name = "title"  th:value="${item.title}">
+            <input type="text" class="form-control" id="title" name = "title"  th:value="${item.title}" required>
             <label for="title">Title</label>
         </div>
         <div class="form-floating m-5">
-            <input type="text" class="form-control" id="info" name = "info"  th:value="${item.info}">
+            <input type="text" class="form-control" id="info" name = "info"  th:value="${item.info}" required>
             <label for="info">Info</label>
         </div>
         <div class="form-floating m-5">
-            <input type="number" class="form-control" id="price" name = "price"   th:value="${item.price}">
+            <input type="number" class="form-control" id="price" name = "price"   th:value="${item.price}" required>
             <label for="price">Price</label>
         </div>
         <div class="form-floating last m-5">
-            <input type="text" class="form-control" id="url" name = "url"  th:value="${item.url}" >
+            <input type="text" class="form-control" id="url" name = "url"  th:value="${item.url}" required>
             <label for="url">Image_Url</label>
         </div>
         <div class="row">

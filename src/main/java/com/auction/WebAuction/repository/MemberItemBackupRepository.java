@@ -9,7 +9,6 @@ import java.util.Set;
 
 public interface MemberItemBackupRepository extends JpaRepository<MemberItemBackup,Long> {
 
-    List<MemberItemBackup> findByMember_Id(Long memberId);
     @Query("SELECT DISTINCT mib.item.id FROM MemberItemBackup mib WHERE mib.member.id = :memberId")
     List<Long> findDistinctItemIdsByMember_Id(Long memberId);
     void deleteByItemId(Long itemId);

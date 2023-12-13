@@ -1,13 +1,7 @@
 package com.auction.WebAuction.service;
 
-import com.auction.WebAuction.model.Item;
-import com.auction.WebAuction.model.Member;
-import com.auction.WebAuction.model.MemberItem;
-import com.auction.WebAuction.model.MemberItemBackup;
-import com.auction.WebAuction.repository.ItemRepository;
-import com.auction.WebAuction.repository.MemberItemBackupRepository;
-import com.auction.WebAuction.repository.MemberItemRepository;
-import com.auction.WebAuction.repository.MemberRepository;
+import com.auction.WebAuction.model.*;
+import com.auction.WebAuction.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
@@ -32,6 +26,8 @@ public class ItemService {
     private MemberItemRepository memberItemRepository;
     @Autowired
     private MemberItemBackupRepository memberItemBackupRepository;
+    @Autowired
+    private FinalItemRepository finalItemRepository;
     @Autowired
     private HttpSession httpSession;
     @Autowired
@@ -140,8 +136,13 @@ public class ItemService {
         }
 
     }
-
-
+    // 최종입찰자 정보 전달
+    public void finalItemSave(long itemId, FinalItem finalItem){
+        Item item = itemRepository.findById(itemId).orElseThrow(() -> new EntityNotFoundException("Item not found"));
+        finalItem.setItem(item);
+        finalItemRepository.save(finalItem);
+    }
+    // 최종입찰자 정보 전달 끝
     // 경매 아이템 등록
     public Item save(Item item){
         return itemRepository.save(item);

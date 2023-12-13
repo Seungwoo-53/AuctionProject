@@ -20,11 +20,11 @@
     </a>
     <form th:action="@{/member/signup}" method="post">
         <div class="form-floating">
-            <input type="text" class="form-control" id="username" name="username">
+            <input type="text" class="form-control" id="username" name="username" required>
             <label for="username">ID</label>
         </div>
         <div class="form-floating">
-            <input type="password" class="form-control" id="userpass" name="userpass">
+            <input type="password" class="form-control" id="userpass" name="userpass" required>
             <label for="userpass">Password</label>
         </div>
         <button class="btn btn-primary w-100 py-2 btn-secondary" type="submit">회원가입</button>

@@ -3,10 +3,8 @@ package com.auction.WebAuction.controller;
 
 import com.auction.WebAuction.error.InsufficientPointsException;
 import com.auction.WebAuction.error.ValidationException;
-import com.auction.WebAuction.model.Item;
-import com.auction.WebAuction.model.Member;
-import com.auction.WebAuction.model.MemberItem;
-import com.auction.WebAuction.model.MemberItemBackup;
+import com.auction.WebAuction.model.*;
+import com.auction.WebAuction.repository.FinalItemRepository;
 import com.auction.WebAuction.repository.ItemRepository;
 import com.auction.WebAuction.repository.MemberItemRepository;
 import com.auction.WebAuction.repository.MemberRepository;
@@ -40,6 +38,8 @@ public class ItemController {
     @Autowired
     private MemberItemRepository memberItemRepository;
     @Autowired
+    private FinalItemRepository finalItemRepository;
+    @Autowired
     private ItemService itemService;
     @Autowired
     private MemberService memberService;
@@ -53,16 +53,48 @@ public class ItemController {
     private ItemDetailService itemDetailService;
 
     @GetMapping("/detail/{id}")
-    public String itemDetail(@PathVariable Long id, Model model) {
+    public String itemDetail(@PathVariable Long id, Model model,Authentication authentication) {
+        Optional<Item> optionalItem = itemRepository.findById(id);
+
+        if (optionalItem.isPresent()) {
+            Item item = optionalItem.get();
+            model.addAttribute("item", item);
+
+            // 현재 로그인한 사용자의 MemberItem 중에서 Item의 enabled 값이 false이고, itemid가 일치하는지 확인
+            if (authentication != null) {
+                String username = authentication.getName();
+                Member member = memberRepository.findByUsername(username);
+                List<MemberItem> memberItems = memberItemRepository.findByMemberAndItemEnabledFalseAndItemId(member, id);
+
+                boolean isItemInFinalTable = finalItemRepository.existsByItemId(id);
+
+                // MemberItem이 존재하거나 final_item 테이블에 해당 아이템이 있다면 경매 확정 바로 가기 버튼을 보여줌
+                model.addAttribute("showAuctionConfirmationButton", !(memberItems.isEmpty() || isItemInFinalTable));
+            }
+        }
         return itemDetailService.handleItemDetails(id, model);
     }
-
-
 
     @PostMapping("/detail/{id}")
     public String updatePrice(@PathVariable("id") long id, @RequestParam int price,
                               Authentication authentication, Model model, RedirectAttributes redirectAttributes) {
         return itemUpdateService.updateItemPrice(id, price, authentication, model, redirectAttributes);
+    }
+
+    @GetMapping("/final/{id}")
+    public String finalItem(@PathVariable Long id,Model model){
+        Optional<Item> finalItem = itemRepository.findById(id);
+        if(finalItem.isPresent()) {
+            Item item = finalItem.get();
+            model.addAttribute(item);
+        }
+        return "item/final";
+    }
+
+    @PostMapping("/final/{id}")
+    public String finalItemSave(@PathVariable("id") long id, @ModelAttribute FinalItem finalItem){
+        itemService.finalItemSave(id,finalItem);
+        return "redirect:/";
     }
     @GetMapping("/register")
     public String register(Model model){
@@ -97,7 +129,6 @@ public class ItemController {
             return "redirect:/";
         }
     }
-
     @Transactional
     @PutMapping("/editRegister/{id}")
     public String updateRegister(@PathVariable("id") long id, @ModelAttribute Item item) {
@@ -115,4 +146,5 @@ public class ItemController {
         itemService.deleteItem(id);
         return "redirect:/item/register";
     }
+
 }

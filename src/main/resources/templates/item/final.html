@@ -1,0 +1,71 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>경매</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link th:href="@{/css/AuctionItems.css}" rel="stylesheet">
+    <link th:href="@{/css/login.css}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+</head>
+<body>
+    <div th:insert="~{/common/header :: headerFragment}"></div>
+    <section class="py-5 text-center container">
+        <h2> 최종입찰자 페이지</h2>
+        <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>title</th>
+            <th>info</th>
+            <th>최종 낙찰금액</th>
+        </tr>
+        </thead>
+            <tbody>
+            <tr>
+                <td th:text="${item.id}"></td>
+                <td th:text="${item.title}"></td>
+                <td th:text="${item.info}"></td>
+                <td>
+                <span th:if="${item.price >= 1000}"
+                      data-th-text="${#numbers.formatInteger(item.price, 3, 'COMMA') + '원'}"></span>
+                    <span th:if="${item.price < 1000}" th:text="${item.price + '원'}"></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <form th:action="@{/item/final/{id}(id=${item.id})}" method="post">
+            <label for="username">사용자 이름: </label>
+            <input type="text" id="username" name="username" th:value="${#authentication.principal.username}" readonly><br>
+
+            <!-- 주소 입력 -->
+            <label for="address">주소: </label>
+            <input type="text" id="address" name="address" required><br>
+
+            <!-- 휴대폰 번호 입력 -->
+            <label for="phone">휴대폰 번호: </label>
+            <input type="tel" id="phone" name="phone" required><br>
+
+            <!-- 제출 버튼 -->
+            <input type="submit" value="제출">
+        </form>
+    </section>
+
+
+    <div th:insert="~{/common/footer :: footerFragment}"></div>
+    <script src="https://kit.fontawesome.com/60b75f9d43.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"></script>
+</body>
+</html>

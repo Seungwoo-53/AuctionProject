@@ -1,5 +1,6 @@
 package com.auction.WebAuction.repository;
 
+import com.auction.WebAuction.model.Member;
 import com.auction.WebAuction.model.MemberItem;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,10 +18,11 @@ public interface MemberItemRepository extends JpaRepository<MemberItem,Long> {
     @Query("SELECT mi.price FROM MemberItem mi WHERE mi.item.id = :itemId")
     int findPriceByItemId(@Param("itemId") Long itemId);
 
-    MemberItem findByMemberId(Long memberItemId);
     MemberItem findByItemId(Long memberItemId);
     @Query("SELECT mi.member.username FROM MemberItem mi WHERE mi.item.id = :itemId")
     String findMemberUsernameByItemId(@Param("itemId") Long itemId);
     void deleteByItemId(Long itemId);
+    List<MemberItem> findByMemberAndItemEnabledFalseAndItemId(Member member, Long itemId);
+
 
 }

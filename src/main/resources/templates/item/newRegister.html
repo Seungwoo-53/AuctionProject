@@ -23,19 +23,19 @@
     <p>새로운 경매 아이템 등록 페이지 입니다.</p>
     <form th:action="@{/item/newRegister}" class="m-auto" method="post">
         <div class="form-floating m-5">
-            <input type="text" class="form-control" id="title" name="title">
+            <input type="text" class="form-control" id="title" name="title" required>
             <label for="title">Title</label>
         </div>
         <div class="form-floating m-5">
-            <input type="text" class="form-control" id="info" name="info">
+            <input type="text" class="form-control" id="info" name="info" required>
             <label for="info">Info</label>
         </div>
         <div class="form-floating m-5">
-            <input type="number" class="form-control" id="price" name="price">
+            <input type="number" class="form-control" id="price" name="price" required>
             <label for="price">Price</label>
         </div>
         <div class="form-floating last m-5">
-            <input type="text" class="form-control" id="url" name="url">
+            <input type="text" class="form-control" id="url" name="url" required>
             <label for="url">Image_Url</label>
         </div>
         <div class="row">
