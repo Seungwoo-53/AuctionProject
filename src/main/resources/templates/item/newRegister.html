@@ -22,21 +22,21 @@
 <section class="py-5 text-center container">
     <p>새로운 경매 아이템 등록 페이지 입니다.</p>
     <form th:action="@{/item/newRegister}" class="m-auto" method="post">
-        <div class="form-floating m-5">
+        <div class="form-floating m-3">
             <input type="text" class="form-control" id="title" name="title" required>
             <label for="title">Title</label>
         </div>
-        <div class="form-floating m-5">
+        <div class="form-floating m-3">
             <input type="text" class="form-control" id="info" name="info" required>
             <label for="info">Info</label>
         </div>
-        <div class="form-floating m-5">
+        <div class="form-floating m-3">
             <input type="number" class="form-control" id="price" name="price" required>
             <label for="price">Price</label>
         </div>
-        <div class="form-floating last m-5">
+        <div class="form-floating last m-3">
             <input type="text" class="form-control" id="url" name="url" required>
-            <label for="url">Image_Url</label>
+            <label for="url">Image_Url (ex /images/iphone.jpg)</label>
         </div>
         <div class="row">
             <div class="col-md-8 mx-auto"> <!-- 여기서 8은 원래의 너비 -->

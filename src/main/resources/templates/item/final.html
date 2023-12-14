@@ -39,19 +39,21 @@
             </tbody>
         </table>
         <form th:action="@{/item/final/{id}(id=${item.id})}" method="post">
-            <label for="username">사용자 이름: </label>
-            <input type="text" id="username" name="username" th:value="${#authentication.principal.username}" readonly><br>
-
-            <!-- 주소 입력 -->
-            <label for="address">주소: </label>
-            <input type="text" id="address" name="address" required><br>
-
-            <!-- 휴대폰 번호 입력 -->
-            <label for="phone">휴대폰 번호: </label>
-            <input type="tel" id="phone" name="phone" required><br>
+            <div class="form-floating mb-3 mt-3">
+                <input type="text" class="form-control"id="username" name="username" th:value="${#authentication.principal.username}" disabled>
+                <label for="username">사용자 이름</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input class="form-control" type="text" id="address" name="address" required>
+                <label for="address">주소:</label>
+            </div>
+            <div class="form-floating">
+                <input class="form-control" type="tel" id="phone" name="phone" required>
+                <label for="phone">휴대폰 번호: </label>
+            </div>
 
             <!-- 제출 버튼 -->
-            <input type="submit" value="제출">
+            <button class="btn btn-primary w-100 py-2 btn-secondary my-3 ml-auto" type="submit">제출</button>
         </form>
     </section>
 

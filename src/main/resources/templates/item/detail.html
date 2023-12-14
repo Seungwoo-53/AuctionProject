@@ -39,7 +39,6 @@
                     <span th:if="${item.price >= 1000}" data-th-text="${#numbers.formatInteger(item.price, 3, 'COMMA') + '원'}"></span>
                     <span th:if="${item.price < 1000}" th:text="${item.price + '원'}"></span>
                 </p>
-
                 <p>
                     <span sec:authentication="name"></span>
                     <span>님의 보유 포인트 :</span>
@@ -68,8 +67,13 @@
         <small class="text-body-secondary text-end">조회수 : </small>
         <small class="text-body-secondary text-end"th:text="${item.view_count}"></small>
     </section>
-
-
+    <script>
+    $('input[type="text"]').keydown(function() {
+    if (event.keyCode === 13) {
+    event.preventDefault();
+    };
+    });
+    </script>
     <!-- footer 시작 -->
     <div th:insert="~{/common/footer :: footerFragment}"></div>
     <!-- footer 끝  -->
