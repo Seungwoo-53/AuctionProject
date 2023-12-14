@@ -65,6 +65,11 @@ public class MemberController {
         return "/member/mypage";
     }
 
-
+    @GetMapping("list")
+    public String memberList(Model model){
+        List<Member> member = memberRepository.findAll() ;
+        model.addAttribute("member",member);
+        return "member/list";
+    }
 
 }

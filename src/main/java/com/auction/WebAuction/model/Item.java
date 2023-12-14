@@ -28,4 +28,7 @@ public class Item {
 
     @OneToMany(mappedBy = "item")
     private List<MemberItem> memberItems = new ArrayList<>();
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.PERSIST)
+    private List<FinalItem> finalItems;
 }

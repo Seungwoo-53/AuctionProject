@@ -20,8 +20,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -103,9 +106,13 @@ public class ItemController {
         return "/item/register";
     }
     @GetMapping("/newRegister")
-    public String newRegister(){
+    public String newRegister(Model model){
+
         return "/item/newRegister";
     }
+
+
+
 
     @PostMapping("/newRegister")
     public String newRegister(@ModelAttribute("item") Item item, BindingResult result) {

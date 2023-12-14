@@ -1,6 +1,7 @@
 package com.auction.WebAuction.config;
 
 import com.auction.WebAuction.model.Member;
+import com.auction.WebAuction.model.Role;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -40,6 +41,7 @@ public class WebSecurityConfig {
                     .authorizeHttpRequests(request -> request
                             .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
                             .requestMatchers("/images/**", "/", "/css/**", "/member/signup", "/member/login").permitAll()
+                            .requestMatchers("/item/register/**","/item/editRegister/**","/item/newRegister/**","/member/list/**").hasRole("ADMIN")
                             .anyRequest().authenticated()
                     )
                     .formLogin(login -> login

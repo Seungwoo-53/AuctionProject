@@ -28,6 +28,7 @@
 <!--                    <li><a href="#" class="nav-link px-2 link-secondary">경매요청</a></li>-->
 <!--                    <li><a href="#" class="nav-link px-2 link-secondary">질문게시판</a></li>-->
                     <li><a th:href="@{/item/register}" class="nav-link px-2 link-secondary" sec:authorize="hasRole('ROLE_ADMIN')">아이템 관리</a></li>
+                    <li><a th:href="@{/member/list}" class="nav-link px-2 link-secondary" sec:authorize="hasRole('ROLE_ADMIN')">회원 관리</a></li>
                 </ul>
 
                 <div class="col-md-3 mb-2 mb-md-0 px-2 text-end">
