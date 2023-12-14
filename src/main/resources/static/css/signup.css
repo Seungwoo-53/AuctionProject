@@ -4,10 +4,9 @@
      font-weight: normal;
      font-style: normal;
 }
-html,
-body {
-  height: 100%;
-  font-family: 'S-CoreDream-3Light';
+
+html,body{
+     font-family: 'S-CoreDream-3Light';
 }
 
 .form-signup {

@@ -22,27 +22,27 @@
 <section class="py-5 text-center container">
     <p>새로운 경매 아이템 등록 페이지 입니다.</p>
     <form th:action="@{/item/newRegister}" class="m-auto" method="post">
-        <div class="form-floating m-3">
+        <div class="form-floating m-5">
             <input type="text" class="form-control" id="title" name="title" required>
             <label for="title">Title</label>
         </div>
-        <div class="form-floating m-3">
+        <div class="form-floating m-5">
             <input type="text" class="form-control" id="info" name="info" required>
             <label for="info">Info</label>
         </div>
-        <div class="form-floating m-3">
+        <div class="form-floating m-5">
             <input type="number" class="form-control" id="price" name="price" required>
             <label for="price">Price</label>
         </div>
-        <div class="form-floating last m-3">
+        <div class="form-floating last m-5">
             <input type="text" class="form-control" id="url" name="url" required>
             <label for="url">Image_Url (ex /images/iphone.jpg)</label>
         </div>
         <div class="row">
-            <div class="col-md-8 mx-auto"> <!-- 여기서 8은 원래의 너비 -->
+            <div class="col-md-9"> <!-- 여기서 8은 원래의 너비 -->
                 <!-- 내용을 그대로 유지 -->
             </div>
-            <div class="col-md-4"> <!-- 여기서 4는 오른쪽에 차지할 너비 -->
+            <div class="col-md-2 ms-5"> <!-- 여기서 4는 오른쪽에 차지할 너비 -->
                 <button class="btn btn-primary w-100 py-2 btn-secondary my-3 ml-auto" type="submit"
                         onclick="validateForm()" id="submitButton">등록
                 </button>

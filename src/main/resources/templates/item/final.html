@@ -40,7 +40,7 @@
         </table>
         <form th:action="@{/item/final/{id}(id=${item.id})}" method="post">
             <div class="form-floating mb-3 mt-3">
-                <input type="text" class="form-control"id="username" name="username" th:value="${#authentication.principal.username}" disabled>
+                <input type="text" class="form-control" id="username" name="username" th:value="${#authentication.principal.username}" readonly>
                 <label for="username">사용자 이름</label>
             </div>
             <div class="form-floating mb-3">
@@ -48,7 +48,7 @@
                 <label for="address">주소:</label>
             </div>
             <div class="form-floating">
-                <input class="form-control" type="tel" id="phone" name="phone" required>
+                <input class="form-control" type="tel" id="phone" name="phone" oninput="formatPhoneNumber(this)" required >
                 <label for="phone">휴대폰 번호: </label>
             </div>
 
@@ -59,6 +59,26 @@
 
 
     <div th:insert="~{/common/footer :: footerFragment}"></div>
+
+    <script>
+        function formatPhoneNumber(input) {
+             // 입력된 값에서 숫자만 추출
+            var phoneNumber = input.value.replace(/\D/g, '');
+
+            // 휴대폰 번호 형식에 맞게 하이픈 추가
+            phoneNumber = phoneNumber.replace(/(\d{0,3})(\d{0,4})(\d{0,4})/, function(match, p1, p2, p3) {
+                var formattedNumber = "";
+                if (p1) formattedNumber += p1;
+                if (p2) formattedNumber += "-" + p2;
+                if (p3) formattedNumber += "-" + p3;
+                return formattedNumber;
+            });
+
+            // 포맷된 번호를 다시 입력란에 설정
+            input.value = phoneNumber;
+        }
+    </script>
+
     <script src="https://kit.fontawesome.com/60b75f9d43.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"

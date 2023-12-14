@@ -17,7 +17,7 @@
     <!-- header -->
     <div th:fragment="itemsFragment">
         <div class="container">
-            <p><span sec:authentication="name">사용자 이름</span> 님이 경매에 참여한 목록입니다.</p>
+            <p class="ms-3 my-5 fs-5 fw-bold"><span sec:authentication="name">사용자 이름</span> 님이 경매에 참여한 목록입니다.</p>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 <div class="col" th:each="item, index : ${item}">
                     <div class="card shadow-sm position-relative"> <!-- position-relative 클래스 추가 -->

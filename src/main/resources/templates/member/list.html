@@ -26,6 +26,7 @@
             <th>KEY</th>
             <th>ID</th>
             <th>현재 보유중인 POINT</th>
+            <th>ROLE</th>
             <!-- 추가적인 필드들을 필요에 따라 추가 -->
         </tr>
         </thead>
@@ -38,6 +39,9 @@
                 <span th:if="${member.point >= 1000}"
                       data-th-text="${#numbers.formatInteger(member.point, 3, 'COMMA') + '원'}"></span>
                 <span th:if="${member.point < 1000}" th:text="${member.point + '원'}"></span>
+            </td>
+            <td>
+                <span th:each="role : ${member.roles}" th:text="${role.name}"></span>
             </td>
             <!-- 추가적인 필드들을 필요에 따라 추가 -->
         </tr>
