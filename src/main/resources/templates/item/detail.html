@@ -70,7 +70,16 @@
                 </div>
             </div>
         </form>
-
+        <div class="row" th:if="${showAuctionConfirmationButton}">
+            <div class="col-md-5 my-2"> <!-- 여기서 8은 원래의 너비 -->
+                <!-- 내용을 그대로 유지 -->
+            </div>
+            <div class="col-md-2 my-2"> <!-- 여기서 4는 오른쪽에 차지할 너비 -->
+                <div>
+                    <a class="btn btn-primary w-100 py-2 btn-secondary" th:href="@{/item/final/{id}(id=${item.id})}">경매 아이템 확정</a>
+                </div>
+            </div>
+        </div>
 
 
         <small class="text-body-secondary text-end">조회수 : </small>

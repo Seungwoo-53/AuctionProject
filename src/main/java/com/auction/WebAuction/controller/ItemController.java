@@ -55,28 +55,6 @@ public class ItemController {
     @Autowired
     private ItemDetailService itemDetailService;
 
-//    @GetMapping("/detail/{id}")
-//    public String itemDetail(@PathVariable Long id, Model model,Authentication authentication) {
-//        Optional<Item> optionalItem = itemRepository.findById(id);
-//
-//        if (optionalItem.isPresent()) {
-//            Item item = optionalItem.get();
-//            model.addAttribute("item", item);
-//
-//            // 현재 로그인한 사용자의 MemberItem 중에서 Item의 enabled 값이 false이고, itemid가 일치하는지 확인
-//            if (authentication != null) {
-//                String username = authentication.getName();
-//                Member member = memberRepository.findByUsername(username);
-//                List<MemberItem> memberItems = memberItemRepository.findByMemberAndItemEnabledFalseAndItemId(member, id);
-//
-//                boolean isItemInFinalTable = finalItemRepository.existsByItemId(id);
-//
-//                // MemberItem이 존재하거나 final_item 테이블에 해당 아이템이 있다면 경매 확정 바로 가기 버튼을 보여줌
-//                model.addAttribute("showAuctionConfirmationButton", !(memberItems.isEmpty() || isItemInFinalTable));
-//            }
-//        }
-//        return itemDetailService.handleItemDetails(id, model);
-//    }
     @GetMapping("/detail/{id}")
     public String itemDetail(@PathVariable Long id, Model model, Authentication authentication) {
         return itemDetailService.handleItemDetails(id, model, authentication);
