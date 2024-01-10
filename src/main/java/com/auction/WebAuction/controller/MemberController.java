@@ -36,12 +36,12 @@ public class MemberController {
 
     @GetMapping("/login")
     public String login(){
-        return "/member/login";
+        return "member/login";
     }
 
     @GetMapping("/signup")
     public String signup(){
-        return "/member/signup";
+        return "member/signup";
     }
     @GetMapping("/signup2")
     public String signup2(){
@@ -62,7 +62,7 @@ public class MemberController {
 
         model.addAttribute("remainingMillisList", remainingMillisList);
         model.addAttribute("item", items);
-        return "/member/mypage";
+        return "member/mypage";
     }
 
     @GetMapping("list")

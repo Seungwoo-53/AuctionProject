@@ -84,12 +84,12 @@ public class ItemController {
     public String register(Model model){
         List<Item> item = itemRepository.findAll();
         model.addAttribute("item", item);
-        return "/item/register";
+        return "item/register";
     }
     @GetMapping("/newRegister")
     public String newRegister(Model model){
 
-        return "/item/newRegister";
+        return "item/newRegister";
     }
 
 
@@ -112,7 +112,7 @@ public class ItemController {
             Item item = itemOptional.get();
             model.addAttribute("item", item);
             model.addAttribute("item", itemOptional.get());
-            return "/item/editRegister";
+            return "item/editRegister";
         } else {
             return "redirect:/";
         }

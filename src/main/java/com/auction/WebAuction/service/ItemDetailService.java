@@ -13,8 +13,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemDetailService {
@@ -31,7 +34,12 @@ public class ItemDetailService {
 
     public String handleItemDetails(Long itemId, Model model, Authentication authentication) {
         Optional<Item> optionalItem = itemRepository.findById(itemId);
+        List<Long> remainingMillisList = optionalItem.stream()
+                .map(item -> Duration.between(LocalDateTime.now(), item.getDate()).toMillis())
+                .collect(Collectors.toList());
 
+        model.addAttribute("remainingMillisList", remainingMillisList);
+        model.addAttribute("itemPrice",itemRepository.findById(itemId).get().getPrice());
         return optionalItem.map(item -> {
             model.addAttribute("item", item);
 
