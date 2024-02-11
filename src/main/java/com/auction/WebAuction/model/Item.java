@@ -31,4 +31,14 @@ public class Item {
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.PERSIST)
     private List<FinalItem> finalItems;
+
+    public boolean isEnabled() {
+        // enabled 필드의 값 반환
+        return this.enabled != null && this.enabled;
+    }
+
+    public Long getId() {
+        // id 필드의 값 반환
+        return this.id;
+    }
 }

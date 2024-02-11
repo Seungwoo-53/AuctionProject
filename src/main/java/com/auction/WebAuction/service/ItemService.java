@@ -113,7 +113,10 @@ public class ItemService {
         memberItem.setItem(item);
         memberItem.setPrice(newPrice);
         memberItemRepository.save(memberItem);
-        backupAndNonDeleteMemberItem(itemId);
+
+        // 2024-02-11 사용하면 memberitembackup에 두개가 생겨서 주석 처리하였음
+        // backupAndNonDeleteMemberItem(itemId);
+
     }
     public Optional<Item> findById(Long itemId) {
         // 아이템을 아이디로 찾아옴

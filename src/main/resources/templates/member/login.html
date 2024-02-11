@@ -13,10 +13,9 @@
 
 <body class="d-flex align-items-center py-4 bg-body-tertiary">
 <main class="form-signin w-100 m-auto">
-    <a th:href="@{/}" class="mb-4 text-center">
-        <i class="fa-solid fa-frog" style="font-size: 3em; color : #6c757d"><span>Auction</span></i>
-        <!-- <h1 class="h3 mb-3 fw-normal">Auction</h1> -->
-    </a>
+        <a th:href="@{/}" class="mb-4 text-center loginHeader">
+            <i class="fa-solid fa-frog" style="font-size: 3em; color : #6c757d"><span>Auction</span></i>
+        </a>
     <div th:if="${param.error}" class="alert alert-danger" role="alert">
         Invalid username and password.
     </div>

@@ -14,14 +14,15 @@
 </head>
 <body>
     <div th:insert="~{common/header :: headerFragment}"></div>
-    <section class="py-5 text-center container">
+    <section class="py-5 text-center container finalPage">
         <h2> 최종입찰자 페이지</h2>
         <table>
         <thead>
         <tr>
-            <th>ID</th>
+            <th>경매번호</th>
             <th>title</th>
             <th>info</th>
+            <th>최종 낙찰자</th>
             <th>최종 낙찰금액</th>
         </tr>
         </thead>
@@ -30,6 +31,7 @@
                 <td th:text="${item.id}"></td>
                 <td th:text="${item.title}"></td>
                 <td th:text="${item.info}"></td>
+                <td th:text="${username}"></td>
                 <td>
                 <span th:if="${item.price >= 1000}"
                       data-th-text="${#numbers.formatInteger(item.price, 3, 'COMMA') + '원'}"></span>

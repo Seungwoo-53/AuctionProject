@@ -26,6 +26,7 @@ public class ItemUpdateService {
     @Autowired
     private ItemService itemService;
 
+    // 아이템 가격을 갱신 | 낙찰 할때 도는 로직
     public String updateItemPrice(long itemId, int newPrice, Authentication authentication, Model model, RedirectAttributes redirectAttributes) {
         try {
             // Retrieve the item

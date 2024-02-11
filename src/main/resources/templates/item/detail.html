@@ -9,12 +9,15 @@
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link th:href="@{/css/AuctionItems.css}" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script th:if="${successMessage}" th:inline="javascript">
-        alert([[${successMessage}]]);
-    </script>
-    <script th:if="${errorMessage}" th:inline="javascript">
-        alert([[${errorMessage}]]);
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<script th:if="${successMessage}" th:inline="javascript">
+    alert([[${successMessage}]]);
+</script>
+<script th:if="${errorMessage}" th:inline="javascript">
+    alert([[${errorMessage}]]);
+</script>
 </head>
 
 <body>
@@ -24,26 +27,28 @@
 
 
 <!-- 경매물품 구간 -->
-<section class="py-3 text-center container">
+<section class="py-3 text-center container"  th:classappend="${item.enabled == false} ? 'finish'">
     <div>
-        <!--            <div class="row py-lg-4">-->
         <div class="col-lg-6 col-md-8 mx-auto py-3 mb-4 border-bottom">
             <div th:if="${not item.enabled}">
-                <h1 class="mb-5">경매 종료</h1>
+                <h1 class="finishAuction mb-5">경매가 종료된 아이템입니다.</h1>
             </div>
             <h2 th:text="${item.title}"></h2>
-            <img th:src="${item.url}" alt="Item Image" />
+            <img th:src="${item.url}" alt="Item Image"/>
             <p th:text="${item.info}"></p>
         </div>
     </div>
     <div>
         <div class="col-lg-6 col-md-8 mx-auto py-3 mb-4 border-bottom">
-            <p>낙찰자 이름 : <span th:text="${memberUsername}"></span></p>
-            <p>낙찰 금액 :
-                <span th:if="${item.price >= 1000}" data-th-text="${#numbers.formatInteger(item.price, 3, 'COMMA') + '원'}"></span>
-                <span th:if="${item.price < 1000}" th:text="${item.price + '원'}"></span>
+            <p>입찰자 이름 : <span th:text="${memberUsername}"></span></p>
+            <p>입찰 금액 :
+                <span id="price">
+                    <span th:if="${item.price >= 1000}"
+                          data-th-text="${#numbers.formatInteger(item.price, 3, 'COMMA') + '원'}"></span>
+                    <span th:if="${item.price < 1000}" th:text="${item.price + '원'}"></span>
+                </span>
             </p>
-            <div class="text-body-secondary text-end" th:each="remainingMillis : ${remainingMillisList}">
+            <div class="text-body-secondary text-end" th:each="remainingMillis : ${remainingMillis}">
                 <small>남은 시간: </small>
                 <small class="countdown" th:attr="data-countdown-millis=${remainingMillis}"></small>
             </div>
@@ -51,120 +56,211 @@
     </div>
 
     <div class="col-lg-6 col-md-8 mx-auto py-2 mb-4">
-        <form id="priceForm" th:action="@{/item/detail/{id}(id=${item.id})}" method="post" th:if="${item.enabled}">
-            <div class="d-flex align-items-center justify-content-center">
+        <!--        여기부터 -->
+        <div th:if="${item.enabled}">
+            <div class="d-flex align-items-center justify-content-center" >
                 <label for="inputPrice" class="me-2">입력 금액:</label>
                 <div class="input-group w-50">
-                    <input type="text" id="inputPrice" name="price" th:value="${item.price}" required class="form-control"/>
-
+                    <input type="text" id="inputPrice" th:value="${item.price}" required class="inputPrice"/>
                     <!-- 1000원씩 더하고 빼는 버튼 추가 -->
                     <div class="input-group-append mx-2">
-                        <button type="button" onclick="add1000()" class="btn btn-secondary"><i class="fa-solid fa-arrow-up"></i></button>
-                        <button type="button" onclick="subtract1000()" class="btn btn-secondary"><i class="fa-solid fa-arrow-down"></i></button>
+                        <button type="button" onclick="add1000()" class="btn btn-secondary"><i
+                                class="fa-solid fa-arrow-up"></i></button>
+                        <button type="button" onclick="subtract1000()" class="btn btn-secondary"><i
+                                class="fa-solid fa-arrow-down"></i></button>
                     </div>
                 </div>
             </div>
-
-            <div class="my-2" th:if="${item.enabled}">
+            <div id="warningMessage" class="alert alert-danger" style="display: none;"></div>
+            <div class="my-2">
                 <p>
                     <span sec:authentication="name"></span>
                     <span>님의 보유 포인트 :</span>
-                    <span th:if="${point >= 1000}" th:text="${#numbers.formatInteger(point, 3, 'COMMA')} + '원'"></span>
-                    <span th:if="${point < 1000}" th:text="${point + '원'}"></span>
+                    <span id="memberPoint">
+                        <span th:if="${point >= 1000}" th:text="${#numbers.formatInteger(point, 3, 'COMMA')} + '원'"></span>
+                        <span th:if="${point < 1000}" th:text="${point + '원'}"></span>
+                    </span>
                 </p>
             </div>
+            <button type="button" onclick="updatePrice()" class="btn btn-primary w-50 my-2 py-1 btn-secondary">입찰</button>
+        </div>
+        <!--        여기까지-->
 
-            <button type="submit" class="btn btn-primary w-50 my-2 py-1 btn-secondary">입찰</button>
 
-            <div th:if="${showAuctionConfirmationButton}">
-                <a class="btn btn-primary w-100 py-2 btn-secondary" th:href="@{item/final/{id}(id=${item.id})}">경매 아이템 확정</a>
-            </div>
-        </form>
+        <div th:if="${showAuctionConfirmationButton}">
+            <a class="btn btn-primary w-50 py-2 btn-secondary" th:href="@{/item/final/{id}(id=${item.id})}">경매 아이템
+                확정</a>
+        </div>
         <small class="text-body-secondary text-end">조회수 : </small>
         <small class="text-body-secondary text-end" th:text="${item.view_count}"></small>
-        <!-- JavaScript 코드 추가 -->
-        <script src="https://cdn.rawgit.com/hilios/jQuery.countdown/2.2.0/dist/jquery.countdown.min.js"></script>
-        <script th:inline="javascript">
-            /*<![CDATA[*/
-            $(document).ready(function () {
-                /* Initialize countdown for each element with class 'countdown' */
-                $('.countdown').each(function () {
-                    var countdownMillis = $(this).data('countdown-millis');
-                    $(this).countdown(countdownMillis)
-                        .on('update.countdown', function (event) {
-                            $(this).text(event.strftime('%H:%M:%S'));
-                        })
-                        .on('finish.countdown', function () {
-                            $(this).text('Expired');
-                        });
-                });
-            });
-
-            function add1000() {
-                var inputPriceElement = document.getElementById('inputPrice');
-                var currentPrice = parseInt(inputPriceElement.value);
-                var newPrice = currentPrice + 1000;
-                inputPriceElement.value = newPrice;
-            }
-
-            function subtract1000() {
-                var inputPriceElement = document.getElementById('inputPrice');
-                var currentPrice = parseInt(inputPriceElement.value);
-                var itemPrice = /*[[${itemPrice}]]*/; // Thymeleaf에서 전달받은 값 사용
-
-                var newPrice = currentPrice - 1000;
-                if (newPrice >= itemPrice) {
-                    inputPriceElement.value = newPrice;
-                    validatePrice(itemPrice); // itemPrice를 validatePrice 함수에 전달
-                }
-            }
-
-            function validatePrice(itemPrice) {
-                var inputPriceElement = document.getElementById('inputPrice');
-                var currentPrice = parseInt(inputPriceElement.value);
-
-
-                if (currentPrice == itemPrice) {
-                    alert("가격은 현재 아이템 가격보다 낮아질 수 없습니다.");
-                    // 또는 다른 방법으로 사용자에게 경고 메시지를 표시할 수 있습니다.
-                    // 예를 들어 Bootstrap의 modal을 사용하거나, 특정 영역에 메시지를 표시하는 등의 방법이 있습니다.
-                }
-            }
-            /*]]>*/
-        </script>
-        <script>
-            $(document).ready(function() {
-                // 모든 countdown 클래스를 가진 엘리먼트를 찾습니다.
-                $('.countdown').each(function() {
-                    var $this = $(this);
-                    var countdownMillis = parseInt($this.data('countdown-millis'));
-
-                    // 갱신 함수를 정의합니다.
-                    function updateCountdown() {
-                        var seconds = Math.floor(countdownMillis / 1000);
-                        var hours = Math.floor(seconds / 3600);
-                        var minutes = Math.floor((seconds % 3600) / 60);
-                        var remainingSeconds = seconds % 60;
-
-                        $this.text(hours + '시간 ' + minutes + '분 ' + remainingSeconds + '초');
-
-                        // 1초 간격으로 갱신합니다.
-                        countdownMillis -= 1000;
-
-                        // 시간이 초과되면 타이머를 중지합니다.
-                        if (countdownMillis < 0) {
-                            clearInterval(intervalId);
-                            $this.text('경매 종료');
-                        }
-                    }
-
-                    // 초기 호출 및 1초마다 갱신합니다.
-                    updateCountdown();
-                    var intervalId = setInterval(updateCountdown, 1000);
-                });
-            });
-        </script>
     </div>
+    <!-- JavaScript 코드 추가 -->
+    <script src="https://cdn.rawgit.com/hilios/jQuery.countdown/2.2.0/dist/jquery.countdown.min.js"></script>
+    <script th:inline="javascript">
+        function add1000() {
+            var inputPriceElement = document.getElementById('inputPrice');
+            var currentPrice = parseInt(inputPriceElement.value);
+            var newPrice = currentPrice + 1000;
+            inputPriceElement.value = newPrice;
+        }
+
+        function subtract1000() {
+            var inputPriceElement = document.getElementById('inputPrice');
+            var currentPrice = parseInt(inputPriceElement.value);
+            var itemPrice = /*[[${itemPrice}]]*/; // Thymeleaf에서 전달받은 값 사용
+
+            var newPrice = currentPrice - 1000;
+            if (newPrice >= itemPrice) {
+                inputPriceElement.value = newPrice;
+                validatePrice(itemPrice); // itemPrice를 validatePrice 함수에 전달
+            }
+        }
+
+        function validatePrice(itemPrice) {
+            var inputPriceElement = document.getElementById('inputPrice');
+            var currentPrice = parseInt(inputPriceElement.value);
+
+
+            if (currentPrice == itemPrice) {
+                alert("가격은 현재 아이템 가격보다 낮아질 수 없습니다.");
+                // 또는 다른 방법으로 사용자에게 경고 메시지를 표시할 수 있습니다.
+                // 예를 들어 Bootstrap의 modal을 사용하거나, 특정 영역에 메시지를 표시하는 등의 방법이 있습니다.
+            }
+        }
+    </script>
+    <script>
+        $(document).ready(function() {
+            // 모든 countdown 클래스를 가진 엘리먼트를 찾습니다.
+            $('.countdown').each(function() {
+                var $this = $(this);
+                var countdownMillis = parseInt($this.data('countdown-millis'));
+
+                // 갱신 함수를 정의합니다.
+                function updateCountdown() {
+                    var seconds = Math.floor(countdownMillis / 1000);
+                    var hours = Math.floor(seconds / 3600);
+                    var minutes = Math.floor((seconds % 3600) / 60);
+                    var remainingSeconds = seconds % 60;
+
+                    $this.text(hours + '시간 ' + minutes + '분 ' + remainingSeconds + '초');
+
+                    // 1초 간격으로 갱신합니다.
+                    countdownMillis -= 1000;
+
+                    // 시간이 초과되면 타이머를 중지합니다.
+                    if (countdownMillis < 0) {
+                        clearInterval(intervalId);
+                        $this.text('경매 종료');
+                    }
+                }
+
+                // 초기 호출 및 1초마다 갱신합니다.
+                updateCountdown();
+                var intervalId = setInterval(updateCountdown, 1000);
+            });
+        });
+    </script>
+
+    <script th:inline="javascript">
+        var socket;
+        var stompClient;
+
+        window.onload = function() {
+            // 현재 페이지 URL에서 아이템 아이디를 추출
+            var itemId = /*[[${itemId}]]*/;
+            console.log(itemId);
+
+            // WebSocket 연결 생성
+            socket = new SockJS('/ws');
+            stompClient = Stomp.over(socket);
+
+            // 연결 시도
+            stompClient.connect({}, function(frame) {
+                console.log('WebSocket 연결 완료: ' + frame);
+
+                // 서버에서 메시지를 받았을 때 처리할 함수 등록
+                stompClient.subscribe('/topic/item/detail/' + itemId, function(response) {
+                    var updatedPrice = JSON.parse(response.body);
+                    console.log('Received updated price: ' + updatedPrice.price);
+                    console.log('Received updated price: ' + updatedPrice.itemId);
+
+                    // 화면 상에 업데이트된 가격을 갱신하는 함수 호출
+                    updatePriceOnScreen(updatedPrice);
+                });
+            });
+
+            // 오류 발생 시 처리
+            stompClient.debug = null; // 디버그 로그 비활성화
+            stompClient.ws.onerror = function(error) {
+                console.log("WebSocket 오류 발생: " + error);
+            };
+
+            // 연결이 닫힐 때
+            stompClient.ws.onclose = function(event) {
+                console.log("WebSocket 연결이 닫혔습니다.");
+            };
+
+            // 페이지를 나갈 때 연결 닫기
+            window.addEventListener('beforeunload', function() {
+                console.log("페이지를 나갑니다. WebSocket 연결이 닫혔습니다.");
+                stompClient.disconnect();
+            });
+        };
+
+                // 화면 상의 가격을 갱신하는 함수
+             function updatePriceOnScreen(updatedPrice) {
+                // 화면에서 가격을 표시하는 요소를 찾아서 업데이트
+                 var priceElement = document.getElementById("price");
+                // 가격을 올바른 형식으로 표시
+                if (updatedPrice.price >= 1000) {
+                    priceElement.innerText = updatedPrice.price.toLocaleString() + "원";
+                } else {
+                    priceElement.innerText = updatedPrice.price + "원";
+                }
+            }
+
+            function updateMemberPointOnScreen() {
+            $.ajax({
+                url: '/getMemberPoint', // 사용자의 포인트를 가져올 엔드포인트
+                method: 'GET',
+                success: function(response) {
+                    // 성공적으로 서버에서 보유 포인트를 가져왔을 때 처리
+                    var memberPoint = response.memberPoint;
+                    var pointElement = document.getElementById("memberPoint");
+
+                    if (memberPoint >= 1000) {
+                        pointElement.innerText = memberPoint.toLocaleString() + "원";
+                    } else {
+                        pointElement.innerText = memberPoint + "원";
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // 오류가 발생했을 때 처리
+                    console.error(error);
+                }
+            });
+        }
+
+        // 일정 간격으로 updateMemberPointOnScreen 함수를 호출하여 보유 포인트를 갱신
+        setInterval(updateMemberPointOnScreen, 1000); // 1초마다 업데이트
+
+        // 가격 정보 업데이트 요청을 서버로 전송하는 함수
+        function updatePrice() {
+            var price = document.getElementById("inputPrice").value;
+            var itemId = /*[[${itemId}]]*/;
+
+            // 가격 정보 전송
+            var message = {
+                itemId: itemId,
+                price: price
+            };
+
+            stompClient.send("/app/item/detail/" + itemId, {}, JSON.stringify(message));
+        }
+
+    </script>
+
+
 </section>
 
 <!-- footer 시작 -->
