@@ -16,7 +16,7 @@
     <nav th:fragment="headerFragment">
         <div class="container">
             <header
-                class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+                class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mt-2 mb-4 border-bottom">
                 <div class="col-md-3 mb-2 mb-md-0 px-2">
                     <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
                         <i class="fa-solid fa-frog" style="font-size: 2em;"></i>
@@ -41,10 +41,10 @@
                             sec:authorize="!isAuthenticated()">회원가입</a>
                         <div sec:authorize="isAuthenticated()">
                             <a th:href="@{/member/mypage}"><i class="fa-regular fa-circle-user fa-xl"
-                                    style="color: #a9b4c7; font-size: 1.75em;"></i></a>
-                            <span sec:authentication="name">사용자</span>
-                            <span sec:authentication="principal.authorities">권한 </span>
-                            <button class="btn btn-secondary" type="submit">로그아웃</button>
+                                    style="color: #a9b4c7; font-size: 2em;"></i></a>
+                            <span sec:authentication="name" style="font-size: 1.2em;">사용자</span>
+<!--                            <span sec:authentication="principal.authorities">권한 </span>-->
+                            <button class="btn btn-secondary" type="submit" style="margin-bottom: 8px;">로그아웃</button>
                         </div>
                     </form>
                 </div>

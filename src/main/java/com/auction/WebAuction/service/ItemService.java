@@ -6,6 +6,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -53,26 +54,34 @@ public class ItemService {
         }
         itemRepository.saveAll(items);
     }
-    @Transactional
-    public void backupAndDeleteMemberItem(Long itemId) {
-        List<MemberItem> memberItemsToDelete = memberItemRepository.findByItem_Id(itemId);
+//    @Transactional
+//    public void backupAndDeleteMemberItem(Long itemId) {
+//        List<MemberItem> memberItemsToDelete = memberItemRepository.findByItem_Id(itemId);
+//
+//        for (MemberItem memberItem : memberItemsToDelete) {
+//            // 백업 테이블에 데이터 이동
+//            MemberItemBackup memberItemBackup = new MemberItemBackup();
+//            memberItemBackup.setMember(memberItem.getMember());
+//            memberItemBackup.setItem(memberItem.getItem());
+//            memberItemBackup.setPrice(memberItem.getPrice());
+//            memberItemBackupRepository.save(memberItemBackup);
+//
+//            // 기존 테이블에서 삭제
+//            memberItemRepository.delete(memberItem);
+//        }
+//    }
+@Transactional
+public void backupAndDeleteMemberItem(Long itemId) {
+    List<MemberItem> memberItemsToDelete = memberItemRepository.findByItem_Id(itemId);
 
-        for (MemberItem memberItem : memberItemsToDelete) {
-            // 백업 테이블에 데이터 이동
-            MemberItemBackup memberItemBackup = new MemberItemBackup();
-            memberItemBackup.setMember(memberItem.getMember());
-            memberItemBackup.setItem(memberItem.getItem());
-            memberItemBackup.setPrice(memberItem.getPrice());
-            memberItemBackupRepository.save(memberItemBackup);
-
-            // 기존 테이블에서 삭제
-            memberItemRepository.delete(memberItem);
-        }
+    for (MemberItem memberItem : memberItemsToDelete) {
+        // 기존 테이블에서 삭제
+        memberItemRepository.delete(memberItem);
     }
+}
     @Transactional
     public void backupAndNonDeleteMemberItem(Long itemId) {
         List<MemberItem> memberItemsToDelete = memberItemRepository.findByItem_Id(itemId);
-
         for (MemberItem memberItem : memberItemsToDelete) {
             // 백업 테이블에 데이터 이동
             MemberItemBackup memberItemBackup = new MemberItemBackup();
@@ -113,7 +122,7 @@ public class ItemService {
         memberItem.setItem(item);
         memberItem.setPrice(newPrice);
         memberItemRepository.save(memberItem);
-
+        backupAndNonDeleteMemberItem(itemId);
         // 2024-02-11 사용하면 memberitembackup에 두개가 생겨서 주석 처리하였음
         // backupAndNonDeleteMemberItem(itemId);
 
@@ -202,4 +211,5 @@ public class ItemService {
         return lastViewedTimeMap;
     }
     // 조회수 서비스 끝
+
 }

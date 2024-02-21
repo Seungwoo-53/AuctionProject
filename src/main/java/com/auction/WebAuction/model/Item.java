@@ -1,5 +1,7 @@
 package com.auction.WebAuction.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -25,10 +27,10 @@ public class Item {
     private String url;
     private Boolean enabled;
 
-
     @OneToMany(mappedBy = "item")
     private List<MemberItem> memberItems = new ArrayList<>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "item", cascade = CascadeType.PERSIST)
     private List<FinalItem> finalItems;
 

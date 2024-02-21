@@ -19,22 +19,26 @@
 
     <!-- 경매물품 구간 -->
     <section class="py-3 text-center container">
-        <div class="row py-lg-5">
+        <div class="row py-lg-5 border-bottom">
             <div class="col-lg-6 col-md-8 mx-auto">
-                <h1 class="fw-light">Acution</h1>
-                <p class="lead text-body-secondary">이벤트 경매 Acution 에 오신것을 환영합니다.</p>
-<!--                <p>-->
-<!--                    <a href="#" class="btn btn-secondary my-2">사이트 사용방법 바로가기</a>-->
-<!--                    <a href="#" class="btn btn-light my-2">예제</a>-->
-<!--                </p>-->
+                <h1 class="fw-light">Auction</h1>
+                <p class="lead text-body-secondary">이벤트 경매 Auction 에 오신것을 환영합니다.</p>
             </div>
         </div>
     </section>
 
-
-    <div th:fragment="itemsFragment">
-        <div class="container">
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" style="--bs-gutter-y: 3em;">
+<!--    <div class="container">-->
+<!--        <button type="button" role="button" class="indexBtn" aria-selected="true" id="viewSortBtn" onclick="Selection(this)">인기순</button>-->
+<!--        <button type="button" role="button" class="indexBtn" aria-selected="false" id="priceSortBtn" onclick="Selection(this)">가격순</button>-->
+<!--        <button type="button" role="button" class="indexBtn" aria-selected="false" id="timeSortBtn" onclick="Selection(this)">시간순</button>-->
+<!--    </div>-->
+    <div class="container">
+        <a th:href="@{/sort/view}" class="indexBtn Selected">인기순</a>
+        <a th:href="@{/sort/price}" class="indexBtn">가격순</a>
+        <a th:href="@{/sort/time}" class="indexBtn">시간순</a>
+    </div>
+        <div class="container" id="itemsContainer">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" style="--bs-gutter-y: 3em;padding-top: 25px;">
                 <div class="col" th:each="item, index : ${item}">
                     <div class="card shadow-sm position-relative"> <!-- position-relative 클래스 추가 -->
                         <span th:class="${item.enabled} ? 'dot green-dot' : 'dot red-dot'"></span>
@@ -46,7 +50,7 @@
                                 <span style="color: white; font-size: 20px;">종료</span>
                             </div>
                         </a>
-                        <div class="card-body">
+                        <div class="card-body max-width">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
                                     <p>상품명 : </p>
@@ -70,7 +74,7 @@
                                 <span class="countdown" th:attr="data-countdown-millis=${remainingMillisList[__${index.index}__]}"></span>
                             </div>
                             <div class="text-end">
-                                <small class="text-body-secondary text-end">조회수 : </small>
+                                <small class="text-body-secondary text-end"><i class="fa-solid fa-eye"></i></small>
                                 <small class="text-body-secondary text-end" th:text="${item.view_count}"></small>
                             </div>
                         </div>
@@ -78,7 +82,55 @@
                 </div>
             </div>
         </div>
-    </div>
+
+    <script th:inline="javascript">
+        function Selection(button) {
+
+        // 모든 버튼의 aria-selected를 false로 설정
+        var buttons = document.querySelectorAll('.indexBtn');
+        buttons.forEach(function(btn) {
+            btn.setAttribute('aria-selected', 'false');
+        });
+        // 클릭된 버튼의 aria-selected를 true로 설정
+        button.setAttribute('aria-selected', 'true');
+
+        // 선택된 버튼의 정보를 서버로 보내는 Ajax 요청 코드 작성
+        var selectedButtonId = button.id;
+        var selectedButtonText = button.textContent;
+        // 이제 selectedButtonId나 selectedButtonText를 사용하여 서버에 정보를 전송하십시오.
+        console.log("selectedButtonId : ",selectedButtonId);
+        console.log("selectedButtonText : ",selectedButtonText);
+
+
+        // Ajax를 사용하여 선택된 버튼의 정보를 서버에 전송할 수 있습니다.
+            $.ajax({
+            url: "/itemSortType", // 요청할 서버의 URL
+            method: "GET", // 요청 메서드
+            data: {
+            selectedButtonId: selectedButtonId
+             },
+            success: function(response) {
+                console.log('Data sent successfully');
+                console.log(response);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error sending data:', error);
+            }
+        });
+
+        }
+        function sortData(dataList) {
+            // 기존 데이터를 지우기 위해 해당 요소를 찾아 제거
+            $("#itemsContainer").empty();
+
+            // 새로운 데이터를 렌더링
+            dataList.forEach(function(item) {
+                // 각 데이터를 화면에 추가하는 로직
+                $("#existingDataContainer").append("<div>" + item.property + "</div>");
+            });
+        }
+
+    </script>
     <script>
         $(document).ready(function() {
             // 모든 countdown 클래스를 가진 엘리먼트를 찾습니다.

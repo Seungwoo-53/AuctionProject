@@ -55,6 +55,7 @@ public class ItemController {
 
     @GetMapping("/detail/{id}")
     public String itemDetail(@PathVariable Long id, Model model, Authentication authentication) {
+        itemDetailService.ItemRankHistory(id,model);
         return itemDetailService.info(id, model, authentication);
     }
     @MessageMapping("/item/detail/{itemId}")

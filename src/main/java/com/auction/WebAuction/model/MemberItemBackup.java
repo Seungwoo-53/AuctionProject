@@ -1,5 +1,6 @@
 package com.auction.WebAuction.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,13 +14,14 @@ public class MemberItemBackup {
 
     @ManyToOne
     @JoinColumn(name = "member_id")
+    @JsonIgnore
     private Member member;
 
     @ManyToOne
     @JoinColumn(name = "item_id")
+    @JsonIgnore
     private Item item;
 
     private int price;
 
-    // 추가적인 필드도 가능
 }

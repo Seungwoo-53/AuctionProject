@@ -17,7 +17,15 @@
     <!-- header -->
     <div th:fragment="itemsFragment">
         <div class="container">
-            <p class="ms-3 my-5 fs-5 fw-bold"><span sec:authentication="name">사용자 이름</span> 님이 경매에 참여한 목록입니다.</p>
+            <p class="ms-3 my-5 fs-5 fw-bold"><span><i class="fa-regular fa-face-smile"></i></span> 경매 참여 목록</p>
+            <p class="ms-3 my-5 fs-5 fw-bold">
+                <span sec:authentication="name"></span>
+                <span>님의 보유 포인트 :</span>
+                 <span id="memberPoint">
+                        <span th:if="${point >= 1000}" th:text="${#numbers.formatInteger(point, 3, 'COMMA')} + '원'"></span>
+                        <span th:if="${point < 1000}" th:text="${point + '원'}"></span>
+                    </span>
+            </p>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 <div class="col" th:each="item, index : ${item}">
                     <div class="card shadow-sm position-relative"> <!-- position-relative 클래스 추가 -->

@@ -1,5 +1,7 @@
 package com.auction.WebAuction.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
@@ -14,6 +16,7 @@ public class FinalItem {
     @Column(name = "id")
     private long id;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "item_id", referencedColumnName = "id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)

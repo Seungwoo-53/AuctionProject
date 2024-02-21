@@ -34,7 +34,8 @@ public class HomeController {
     @GetMapping("/")
     public String index(Model model, Authentication authentication) {
 
-        List<Item> items = itemRepository.findAll();
+        List<Item> items = itemRepository.findAllByOrderByViewCountDesc();
+
         List<Long> remainingMillisList = items.stream()
                 .map(item -> Duration.between(LocalDateTime.now(), item.getDate()).toMillis())
                 .collect(Collectors.toList());

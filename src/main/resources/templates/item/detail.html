@@ -12,13 +12,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 </head>
-<script th:if="${successMessage}" th:inline="javascript">
-    alert([[${successMessage}]]);
-</script>
-<script th:if="${errorMessage}" th:inline="javascript">
-    alert([[${errorMessage}]]);
-</script>
-</head>
 
 <body>
 <!-- header -->
@@ -40,7 +33,7 @@
     </div>
     <div>
         <div class="col-lg-6 col-md-8 mx-auto py-3 mb-4 border-bottom">
-            <p>입찰자 이름 : <span th:text="${memberUsername}"></span></p>
+            <p>입찰자 이름 : <span th:text="${memberUsername}" id="username"></span></p>
             <p>입찰 금액 :
                 <span id="price">
                     <span th:if="${item.price >= 1000}"
@@ -48,7 +41,7 @@
                     <span th:if="${item.price < 1000}" th:text="${item.price + '원'}"></span>
                 </span>
             </p>
-            <div class="text-body-secondary text-end" th:each="remainingMillis : ${remainingMillis}">
+            <div class="text-body-secondary text-end" th:each="remainingMillis : ${remainingMillis}"  th:classappend="${item.enabled == false} ? 'finish'">
                 <small>남은 시간: </small>
                 <small class="countdown" th:attr="data-countdown-millis=${remainingMillis}"></small>
             </div>
@@ -74,7 +67,7 @@
             <div id="warningMessage" class="alert alert-danger" style="display: none;"></div>
             <div class="my-2">
                 <p>
-                    <span sec:authentication="name"></span>
+                    <span id="loginName" sec:authentication="name" ></span>
                     <span>님의 보유 포인트 :</span>
                     <span id="memberPoint">
                         <span th:if="${point >= 1000}" th:text="${#numbers.formatInteger(point, 3, 'COMMA')} + '원'"></span>
@@ -88,12 +81,48 @@
 
 
         <div th:if="${showAuctionConfirmationButton}">
-            <a class="btn btn-primary w-50 py-2 btn-secondary" th:href="@{/item/final/{id}(id=${item.id})}">경매 아이템
-                확정</a>
+            <a class="btn btn-primary w-50 py-2 btn-secondary" th:href="@{/item/final/{id}(id=${item.id})}">경매 아이템 확정</a>
         </div>
         <small class="text-body-secondary text-end">조회수 : </small>
         <small class="text-body-secondary text-end" th:text="${item.view_count}"></small>
+
     </div>
+</section>
+
+
+<div class="container text-center">
+    <div>
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        <span>입찰 히스토리</span>
+    </div>
+
+    <div class="container align-items-center w-100" id="itemRankingHistory">
+        <div class="row">
+            <div class="col-md-12">
+                <div th:each="item, itemStat : ${itemHistory}" class="d-flex justify-content-around mb-2 mt-2">
+                    <div>
+                        <span><i class="fa-solid fa-crown" th:classappend="${(itemStat.index == 0 ? 'first ' : '') +
+                        (itemStat.index == 1 ? 'second ' : '') + (itemStat.index == 2 ? 'third ' : '')}"></i></span>
+                        <span th:text="${itemStat.index + 1}">1</span>
+                    </div>
+                    <div>
+                        <span th:text="${item.member.username}">송승우</span> <!-- 이 부분을 적절히 수정해주세요 -->
+                    </div>
+                    <div>
+                        <span>입찰가격</span>
+                        <span th:text="${item.price}">10000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
     <!-- JavaScript 코드 추가 -->
     <script src="https://cdn.rawgit.com/hilios/jQuery.countdown/2.2.0/dist/jquery.countdown.min.js"></script>
     <script th:inline="javascript">
@@ -169,11 +198,9 @@
             // 현재 페이지 URL에서 아이템 아이디를 추출
             var itemId = /*[[${itemId}]]*/;
             console.log(itemId);
-
             // WebSocket 연결 생성
-            socket = new SockJS('/ws');
+            socket = new SockJS('/ws'); // SockJS 엔드포인트 URL
             stompClient = Stomp.over(socket);
-
             // 연결 시도
             stompClient.connect({}, function(frame) {
                 console.log('WebSocket 연결 완료: ' + frame);
@@ -182,8 +209,7 @@
                 stompClient.subscribe('/topic/item/detail/' + itemId, function(response) {
                     var updatedPrice = JSON.parse(response.body);
                     console.log('Received updated price: ' + updatedPrice.price);
-                    console.log('Received updated price: ' + updatedPrice.itemId);
-
+                    console.log('Received updated itemId: ' + updatedPrice.itemId);
                     // 화면 상에 업데이트된 가격을 갱신하는 함수 호출
                     updatePriceOnScreen(updatedPrice);
                 });
@@ -211,9 +237,12 @@
              function updatePriceOnScreen(updatedPrice) {
                 // 화면에서 가격을 표시하는 요소를 찾아서 업데이트
                  var priceElement = document.getElementById("price");
+                 var usernameElement = document.getElementById("username");
+
                 // 가격을 올바른 형식으로 표시
                 if (updatedPrice.price >= 1000) {
                     priceElement.innerText = updatedPrice.price.toLocaleString() + "원";
+                    usernameElement.innerText = document.getElementById("loginName").innerText;
                 } else {
                     priceElement.innerText = updatedPrice.price + "원";
                 }
@@ -227,7 +256,6 @@
                     // 성공적으로 서버에서 보유 포인트를 가져왔을 때 처리
                     var memberPoint = response.memberPoint;
                     var pointElement = document.getElementById("memberPoint");
-
                     if (memberPoint >= 1000) {
                         pointElement.innerText = memberPoint.toLocaleString() + "원";
                     } else {
@@ -244,24 +272,44 @@
         // 일정 간격으로 updateMemberPointOnScreen 함수를 호출하여 보유 포인트를 갱신
         setInterval(updateMemberPointOnScreen, 1000); // 1초마다 업데이트
 
-        // 가격 정보 업데이트 요청을 서버로 전송하는 함수
-        function updatePrice() {
-            var price = document.getElementById("inputPrice").value;
-            var itemId = /*[[${itemId}]]*/;
+            // 가격 정보 업데이트 요청을 서버로 전송하는 함수
+            function updatePrice() {
+                var confirmed = confirm("입찰하시겠습니까?");
 
-            // 가격 정보 전송
-            var message = {
-                itemId: itemId,
-                price: price
-            };
+                var price = document.getElementById("inputPrice").value;
+                var point = /*[[${point}]]*/;
+                var itemId = /*[[${itemId}]]*/;
+                var itemPrice = /*[[${itemPrice}]]*/;
+                var loginName = /*[[${loginName}]]*/;
+                console.log('price: ' + price);
+                console.log('point: ' + point);
+                 if (confirmed) {
+                    if(price <= itemPrice){
+                        alert("너무 적은 가격을 입력하였습니다.");
+                        return;
+                    }
+                    if(price > point){
+                        alert("너무 많은 가격을 입력하였습니다.");
+                        return;
+                    }
 
-            stompClient.send("/app/item/detail/" + itemId, {}, JSON.stringify(message));
-        }
+                    // 가격 정보 전송
+                    var message = {
+                        itemId: itemId,
+                        price: price
+                    };
+                    stompClient.send("/app/item/detail/" + itemId, {}, JSON.stringify(message));
+                    alert("입찰이 완료되었습니다!");
+                } else {
+                    // 사용자가 취소를 선택한 경우
+                    alert("입찰이 취소되었습니다.");
+                }
+
+            }
 
     </script>
 
 
-</section>
 
 <!-- footer 시작 -->
 <div th:insert="~{common/footer :: footerFragment}"></div>

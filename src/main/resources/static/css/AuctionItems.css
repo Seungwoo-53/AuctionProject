@@ -22,7 +22,7 @@ html,body{
       font-size: 3.5rem;
     }
   }
-   @media (max-width: 1400px) {
+   @media (max-width: 1300px) {
        .inputPrice {
                 width : 80px
             }
@@ -128,12 +128,58 @@ html,body{
     box-shadow: 0 0 5px rgba(105, 105, 105, 0.5);
 }
 .finishAuction{
-    color: red;
+    color: lightcoral;
     text-shadow: 1px 1px 1px;
 }
 .finish{
-    color: lightpink;
+    color: darkgray!important;
 }
 .finalPage{
     width:60%;
+}
+.max-width{
+    white-space: nowrap; /* 텍스트가 한 줄로만 표시되도록 함 */
+    overflow: hidden; /* 넘치는 텍스트는 숨김 처리 */
+    text-overflow: ellipsis; /* 넘치는 텍스트를 생략 부호 (...)로 표시 */
+}
+
+.indexBtn{
+    border: 0;
+    background: rgba(0,0,0,0);
+    font-size:15px;
+    font-weight: normal; /* 기본 글꼴 두께 */
+    transition: all 0.5s linear; /* 변화에 대한 전환 효과 */
+    text-decoration: none;
+    color:black;
+    padding: 1px 6px;
+}
+.indexBtn:hover {
+    font-weight: bold;
+}
+.Selected{
+    font-weight: bold;
+    text-decoration:underline;
+    font-size:16px;
+}
+#itemRankingHistory{
+    max-width:558px;
+    border:1px;
+    border-style:solid;
+    border-color:darkgray;
+    border-radius:5px;
+    max-height: 125px;
+    overflow-y: auto;
+}
+.first{
+    color:gold;
+}
+.second{
+    color:silver;
+}
+.third{
+    color:brown;
+}
+.errorPage{
+    color:indianred;
+    font-size:3.5em;
 }
