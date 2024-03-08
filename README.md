@@ -1,2 +1,11 @@
 이벤트 경매 사이트 Event-Auction 입니다!
-![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=Seungwoo-53&hide=contribs,prs&show_icons=true&theme=테마)
+
+<details>
+  <summary><b>시스템 아키텍처</b></summary>
+  <div markdown="1">
+    <ul>
+      <li>Nginx Spring Boot AWS EC2 RDS</li>
+      <img src="" width=70%>
+    </ul>
+  </div>
+</details>
