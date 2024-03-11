@@ -2,7 +2,7 @@
   <div>중고나라, 당근마켓 같은 중고거래 플랫폼에 경매시스템을 적용하면 어떨까?</div> 
 </h2>
 <div>하는 아이디어에서 출발한 프로젝트 이벤트 경매 사이트 Event-Auction 입니다!</div><br>
-
+<a href="https://www.event-auction.kro.kr/" target="_blank">사이트 바로가기</a>
 <div>
   <h2>메인화면</h2>
    <img src="https://github.com/Seungwoo-53/AuctionProject/assets/54237336/622fc023-1149-4187-b33e-ac7d780242ff" width=100%>
