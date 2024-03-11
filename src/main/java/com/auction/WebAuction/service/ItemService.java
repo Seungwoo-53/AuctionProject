@@ -54,31 +54,15 @@ public class ItemService {
         }
         itemRepository.saveAll(items);
     }
-//    @Transactional
-//    public void backupAndDeleteMemberItem(Long itemId) {
-//        List<MemberItem> memberItemsToDelete = memberItemRepository.findByItem_Id(itemId);
-//
-//        for (MemberItem memberItem : memberItemsToDelete) {
-//            // 백업 테이블에 데이터 이동
-//            MemberItemBackup memberItemBackup = new MemberItemBackup();
-//            memberItemBackup.setMember(memberItem.getMember());
-//            memberItemBackup.setItem(memberItem.getItem());
-//            memberItemBackup.setPrice(memberItem.getPrice());
-//            memberItemBackupRepository.save(memberItemBackup);
-//
-//            // 기존 테이블에서 삭제
-//            memberItemRepository.delete(memberItem);
-//        }
-//    }
-@Transactional
-public void backupAndDeleteMemberItem(Long itemId) {
-    List<MemberItem> memberItemsToDelete = memberItemRepository.findByItem_Id(itemId);
+    @Transactional
+    public void backupAndDeleteMemberItem(Long itemId) {
+        List<MemberItem> memberItemsToDelete = memberItemRepository.findByItem_Id(itemId);
 
-    for (MemberItem memberItem : memberItemsToDelete) {
-        // 기존 테이블에서 삭제
-        memberItemRepository.delete(memberItem);
+        for (MemberItem memberItem : memberItemsToDelete) {
+            // 기존 테이블에서 삭제
+            memberItemRepository.delete(memberItem);
+        }
     }
-}
     @Transactional
     public void backupAndNonDeleteMemberItem(Long itemId) {
         List<MemberItem> memberItemsToDelete = memberItemRepository.findByItem_Id(itemId);
@@ -123,8 +107,6 @@ public void backupAndDeleteMemberItem(Long itemId) {
         memberItem.setPrice(newPrice);
         memberItemRepository.save(memberItem);
         backupAndNonDeleteMemberItem(itemId);
-        // 2024-02-11 사용하면 memberitembackup에 두개가 생겨서 주석 처리하였음
-        // backupAndNonDeleteMemberItem(itemId);
 
     }
     public Optional<Item> findById(Long itemId) {
@@ -154,15 +136,13 @@ public void backupAndDeleteMemberItem(Long itemId) {
         finalItem.setItem(item);
         finalItemRepository.save(finalItem);
     }
-    // 최종입찰자 정보 전달 끝
+
     // 경매 아이템 등록
     public Item save(Item item){
         return itemRepository.save(item);
     }
-    //
 
-
-    // 조회수 서비스
+    // =========== 조회수 서비스 ============
     public long incrementViewCount(long id) {
         Item item = itemRepository.findById(id).orElse(null);
 
@@ -187,7 +167,7 @@ public void backupAndDeleteMemberItem(Long itemId) {
 
         LocalDateTime lastViewedTime = lastViewedTimeMap.get(id);
 
-        //plusMinutes 분 마다 조회수 를 올릴 수 있음
+        //plusMinutes 분 마다 조회수 를 올릴 수 있음 | 현재는 5분으로 처리 중
         if (lastViewedTime == null || lastViewedTime.plusMinutes(5).isBefore(LocalDateTime.now())) {
             return true;
         }
@@ -210,6 +190,6 @@ public void backupAndDeleteMemberItem(Long itemId) {
 
         return lastViewedTimeMap;
     }
-    // 조회수 서비스 끝
+    //  =========== 조회수 서비스 ============
 
 }

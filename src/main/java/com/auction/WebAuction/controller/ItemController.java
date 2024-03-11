@@ -1,6 +1,7 @@
 package com.auction.WebAuction.controller;
 
 
+import com.auction.WebAuction.dto.ItemUpdateDTO;
 import com.auction.WebAuction.error.ValidationException;
 import com.auction.WebAuction.model.*;
 import com.auction.WebAuction.repository.FinalItemRepository;
@@ -8,8 +9,6 @@ import com.auction.WebAuction.repository.ItemRepository;
 import com.auction.WebAuction.repository.MemberItemRepository;
 import com.auction.WebAuction.repository.MemberRepository;
 import com.auction.WebAuction.service.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -60,10 +59,9 @@ public class ItemController {
     }
     @MessageMapping("/item/detail/{itemId}")
     @SendTo("/item/detail/{itemId}")
-    public void updatePrice(PriceUpdateMessage message,Authentication authentication) {
+    public void updatePrice(ItemUpdateDTO message, Authentication authentication) {
         // 가격 업데이트 로직 구현
         // 예를 들어, 데이터베이스에서 경매 상품을 가져와 가격을 업데이트하고 저장합니다.
-        System.out.println("WebSocket Success");
         Optional<Item> itemOptional = itemRepository.findById(message.getItemId());
         int prePrice, newPrice;
         String username = authentication.getName();
@@ -90,7 +88,7 @@ public class ItemController {
 
                     // Success message
                     messagingTemplate.convertAndSend("/topic/item/detail/" + item.getId(), message);
-
+                    System.out.println("message : "+ message);
                     System.out.println("Server Success");
                 } else {
                     // Insufficient points
@@ -105,11 +103,6 @@ public class ItemController {
         }
 
     }
-//    @PostMapping("/detail/{id}")
-//    public String updatePrice(@PathVariable("id") long id, @RequestParam int price,
-//                              Authentication authentication, Model model, RedirectAttributes redirectAttributes) {
-//        return itemUpdateService.updateItemPrice(id, price, authentication, model, redirectAttributes);
-//    }
 
     @GetMapping("/final/{id}")
     public String finalItem(@PathVariable Long id,Model model,Authentication authentication){
@@ -153,9 +146,6 @@ public class ItemController {
 
         return "item/newRegister";
     }
-
-
-
 
     @PostMapping("/newRegister")
     public String newRegister(@ModelAttribute("item") Item item, BindingResult result) {

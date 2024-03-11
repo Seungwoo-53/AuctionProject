@@ -1,185 +1,211 @@
 @font-face {
-     font-family: 'S-CoreDream-3Light';
-     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
-     font-weight: normal;
-     font-style: normal;
+  font-family: 'S-CoreDream-3Light';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
-html,body{
-     font-family: 'S-CoreDream-3Light';
+html,
+body {
+  font-family: 'S-CoreDream-3Light';
 }
 
 .bd-placeholder-img {
-    font-size: 1.125rem;
-    text-anchor: middle;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
-  }
+  font-size: 1.125rem;
+  text-anchor: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
 
-  @media (min-width: 768px) {
-    .bd-placeholder-img-lg {
-      font-size: 3.5rem;
-    }
+@media (min-width: 768px) {
+  .bd-placeholder-img-lg {
+    font-size: 3.5rem;
   }
-   @media (max-width: 1300px) {
-       .inputPrice {
-                width : 80px
-            }
-    }
+}
 
-  strong{
-    font-size: 1.5em;
+@media (max-width: 1300px) {
+  .inputPrice {
+    width: 80px
   }
-  .b-example-divider {
-    width: 100%;
-    height: 3rem;
-    background-color: rgba(0, 0, 0, .1);
-    border: solid rgba(0, 0, 0, .15);
-    border-width: 1px 0;
-    box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-  }
+}
 
-  .b-example-vr {
-    flex-shrink: 0;
-    width: 1.5rem;
-    height: 100vh;
-  }
+strong {
+  font-size: 1.5em;
+}
 
-  .bi {
-    vertical-align: -.125em;
-    fill: currentColor;
-  }
+.b-example-divider {
+  width: 100%;
+  height: 3rem;
+  background-color: rgba(0, 0, 0, .1);
+  border: solid rgba(0, 0, 0, .15);
+  border-width: 1px 0;
+  box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+}
 
-  .nav-scroller {
-    position: relative;
-    z-index: 2;
-    height: 2.75rem;
-    overflow-y: hidden;
-  }
+.b-example-vr {
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 100vh;
+}
 
-  .nav-scroller .nav {
-    display: flex;
-    flex-wrap: nowrap;
-    padding-bottom: 1rem;
-    margin-top: -1px;
-    overflow-x: auto;
-    text-align: center;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-  }
+.bi {
+  vertical-align: -.125em;
+  fill: currentColor;
+}
 
-  .btn-bd-primary {
-    --bd-violet-bg: #712cf9;
-    --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+.nav-scroller {
+  position: relative;
+  z-index: 2;
+  height: 2.75rem;
+  overflow-y: hidden;
+}
 
-    --bs-btn-font-weight: 600;
-    --bs-btn-color: var(--bs-white);
-    --bs-btn-bg: var(--bd-violet-bg);
-    --bs-btn-border-color: var(--bd-violet-bg);
-    --bs-btn-hover-color: var(--bs-white);
-    --bs-btn-hover-bg: #6528e0;
-    --bs-btn-hover-border-color: #6528e0;
-    --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
-    --bs-btn-active-color: var(--bs-btn-hover-color);
-    --bs-btn-active-bg: #5a23c8;
-    --bs-btn-active-border-color: #5a23c8;
-  }
+.nav-scroller .nav {
+  display: flex;
+  flex-wrap: nowrap;
+  padding-bottom: 1rem;
+  margin-top: -1px;
+  overflow-x: auto;
+  text-align: center;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
 
-  .bd-mode-toggle {
-    z-index: 1500;
-  }
+.btn-bd-primary {
+  --bd-violet-bg: #712cf9;
+  --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
 
-  .bd-mode-toggle .dropdown-menu .active .bi {
-    display: block !important;
-  }
+  --bs-btn-font-weight: 600;
+  --bs-btn-color: var(--bs-white);
+  --bs-btn-bg: var(--bd-violet-bg);
+  --bs-btn-border-color: var(--bd-violet-bg);
+  --bs-btn-hover-color: var(--bs-white);
+  --bs-btn-hover-bg: #6528e0;
+  --bs-btn-hover-border-color: #6528e0;
+  --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+  --bs-btn-active-color: var(--bs-btn-hover-color);
+  --bs-btn-active-bg: #5a23c8;
+  --bs-btn-active-border-color: #5a23c8;
+}
+
+.bd-mode-toggle {
+  z-index: 1500;
+}
+
+.bd-mode-toggle .dropdown-menu .active .bi {
+  display: block !important;
+}
 
 .dot {
-   display: inline-block;
-   width: 10px;
-   height: 10px;
-   border-radius: 50%;
-   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* 기본 그림자 효과 추가 */
-   margin: 10px; /* 간격 추가 */
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  /* 기본 그림자 효과 추가 */
+  margin: 10px;
+  /* 간격 추가 */
 }
 
 .green-dot {
-   background-color: limegreen;
-   box-shadow: 0 0 5px rgba(0, 128, 0, 0.5); /* 초록색 그림자 효과 추가 */
+  background-color: limegreen;
+  box-shadow: 0 0 5px rgba(0, 128, 0, 0.5);
+  /* 초록색 그림자 효과 추가 */
 }
 
 .red-dot {
-   background-color: orangered;
-   box-shadow: 0 0 5px rgba(255, 0, 0, 0.5); /* 빨간색 그림자 효과 추가 */
-}
-.input-group {
-    position: relative;
-}
-.inputPrice {
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px!important;
-    font-size: 16px;
-    text-align: right;
-}
-.inputPrice:focus {
-    outline:none;
-    border-color: #a9a9a9;
-    box-shadow: 0 0 5px rgba(105, 105, 105, 0.5);
-}
-.finishAuction{
-    color: lightcoral;
-    text-shadow: 1px 1px 1px;
-}
-.finish{
-    color: darkgray!important;
-}
-.finalPage{
-    width:60%;
-}
-.max-width{
-    white-space: nowrap; /* 텍스트가 한 줄로만 표시되도록 함 */
-    overflow: hidden; /* 넘치는 텍스트는 숨김 처리 */
-    text-overflow: ellipsis; /* 넘치는 텍스트를 생략 부호 (...)로 표시 */
+  background-color: orangered;
+  box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+  /* 빨간색 그림자 효과 추가 */
 }
 
-.indexBtn{
-    border: 0;
-    background: rgba(0,0,0,0);
-    font-size:15px;
-    font-weight: normal; /* 기본 글꼴 두께 */
-    transition: all 0.5s linear; /* 변화에 대한 전환 효과 */
-    text-decoration: none;
-    color:black;
-    padding: 1px 6px;
+.input-group {
+  position: relative;
 }
+
+.inputPrice {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px !important;
+  font-size: 16px;
+  text-align: right;
+}
+
+.inputPrice:focus {
+  outline: none;
+  border-color: #a9a9a9;
+  box-shadow: 0 0 5px rgba(105, 105, 105, 0.5);
+}
+
+.finishAuction {
+  color: lightcoral;
+  text-shadow: 1px 1px 1px;
+}
+
+.finish {
+  color: darkgray !important;
+}
+
+.finalPage {
+  width: 60%;
+}
+
+.max-width {
+  white-space: nowrap;
+  /* 텍스트가 한 줄로만 표시되도록 함 */
+  overflow: hidden;
+  /* 넘치는 텍스트는 숨김 처리 */
+  text-overflow: ellipsis;
+  /* 넘치는 텍스트를 생략 부호 (...)로 표시 */
+}
+
+.indexBtn {
+  border: 0;
+  background: rgba(0, 0, 0, 0);
+  font-size: 15px;
+  font-weight: normal;
+  /* 기본 글꼴 두께 */
+  transition: all 0.5s linear;
+  /* 변화에 대한 전환 효과 */
+  text-decoration: none;
+  color: black;
+  padding: 1px 6px;
+}
+
 .indexBtn:hover {
-    font-weight: bold;
+  font-weight: bold;
 }
-.Selected{
-    font-weight: bold;
-    text-decoration:underline;
-    font-size:16px;
+
+.Selected {
+  font-weight: bold;
+  text-decoration: underline;
+  font-size: 16px;
 }
-#itemRankingHistory{
-    max-width:558px;
-    border:1px;
-    border-style:solid;
-    border-color:darkgray;
-    border-radius:5px;
-    max-height: 125px;
-    overflow-y: auto;
+
+#itemRankingHistory {
+  max-width: 558px;
+  border: 1px;
+  border-style: solid;
+  border-color: darkgray;
+  border-radius: 5px;
+  max-height: 125px;
+  overflow-y: auto;
 }
-.first{
-    color:gold;
+
+.first {
+  color: gold;
 }
-.second{
-    color:silver;
+
+.second {
+  color: silver;
 }
-.third{
-    color:brown;
+
+.third {
+  color: brown;
 }
-.errorPage{
-    color:indianred;
-    font-size:3.5em;
+
+.errorPage {
+  color: indianred;
+  font-size: 3.5em;
 }

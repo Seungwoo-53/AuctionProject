@@ -54,6 +54,7 @@ public class ItemDetailService {
             model.addAttribute("itemPrice", item.getPrice());
             model.addAttribute("item", item);
             model.addAttribute("itemId",itemId);
+            model.addAttribute("username",username);
             // 최종 낙찰자 정보 입력 버튼
             // 경매남은시간이 없고, 낙찰된 유저만 보이게끔, final정보를 입력안했을때만 보이게끔.
             if(!item.getEnabled()){
@@ -75,60 +76,10 @@ public class ItemDetailService {
         return "item/detail";
     }
 
-//    public String handleItemDetails(Long itemId, Model model, Authentication authentication) {
-//       Optional<Item> optionalItem = itemRepository.findById(itemId);
-//        String username = authentication.getName();
-//
-//       optionalItem.ifPresent(item -> {
-//           long remainingMillis = Duration.between(LocalDateTime.now(), item.getDate()).toMillis();
-//          model.addAttribute("remainingMillis", remainingMillis);
-//         model.addAttribute("itemPrice", item.getPrice());
-//           model.addAttribute("item", item);
-//
-//            if (authentication != null) {
-//              handleAuthenticationDetails(itemId, model, authentication);
-//           }
-//        });
-//
-//        return optionalItem.isPresent() ? handleAdditionalDetails(itemId, model) : "redirect:/";
-//   }
-//
-//   private void handleAuthenticationDetails(Long itemId, Model model, Authentication authentication) {
-//       System.out.println("handleAuthenticationDetails 메소드가 실행 되었습니다.");
-//       String username = authentication.getName();
-//       Member member = memberRepository.findByUsername(username);
-//
-//       List<MemberItem> memberItems = memberItemRepository.findByMemberAndItemEnabledFalseAndItemId(member, itemId);
-//      boolean isItemInFinalTable = finalItemRepository.existsByItemId(itemId);
-//
-//       model.addAttribute("showAuctionConfirmationButton", !(memberItems.isEmpty() || isItemInFinalTable));
-//    }
-//
-//   private String handleAdditionalDetails(Long itemId, Model model) {
-//        Long views = itemService.incrementViewCount(itemId);
-//       model.addAttribute("views", views);
-//
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String username = authentication.getName();
-//        Member member = memberRepository.findByUsername(username);
-//
-//        int point = member.getPoint();
-//        model.addAttribute("member", member);
-//        model.addAttribute("point", point);
-//
-//        String memberUsername = memberItemRepository.findMemberUsernameByItemId(itemId);
-//        model.addAttribute("memberUsername", memberUsername);
-//
-//       return "item/detail";
-//    }
-
-    // 랭킹 히스토리는 이름, 가격만 보여줄꺼. 해당하는 itemId의 memberId에 해당하는 username과 | 입찰가격 price를 가져와야해.
+    // 랭킹 히스토리는 이름, 가격만 보여줄꺼. 해당하는 itemId의 memberId에 해당하는 username과 | 입찰가격 price를 가져와야한다.
     public List<MemberItemBackup> ItemRankHistory(Long itemId,Model model){
         List<MemberItemBackup> itemHistory = memberItemBackupRepository.findByItemIdOrderedByPriceDesc(itemId);
-
         model.addAttribute("itemHistory",itemHistory);
-
-
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             String jsonString = objectMapper.writeValueAsString(itemHistory);

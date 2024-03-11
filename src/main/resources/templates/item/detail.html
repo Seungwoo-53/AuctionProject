@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>경매</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link th:href="@{/css/AuctionItems.css}" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
@@ -14,109 +14,113 @@
 </head>
 
 <body>
-<!-- header -->
-<div th:insert="~{common/header :: headerFragment}"></div>
-<!-- header -->
+    <!-- header -->
+    <div th:insert="~{common/header :: headerFragment}"></div>
+    <!-- header -->
 
 
-<!-- 경매물품 구간 -->
-<section class="py-3 text-center container"  th:classappend="${item.enabled == false} ? 'finish'">
-    <div>
-        <div class="col-lg-6 col-md-8 mx-auto py-3 mb-4 border-bottom">
-            <div th:if="${not item.enabled}">
-                <h1 class="finishAuction mb-5">경매가 종료된 아이템입니다.</h1>
-            </div>
-            <h2 th:text="${item.title}"></h2>
-            <img th:src="${item.url}" alt="Item Image"/>
-            <p th:text="${item.info}"></p>
-        </div>
-    </div>
-    <div>
-        <div class="col-lg-6 col-md-8 mx-auto py-3 mb-4 border-bottom">
-            <p>입찰자 이름 : <span th:text="${memberUsername}" id="username"></span></p>
-            <p>입찰 금액 :
-                <span id="price">
-                    <span th:if="${item.price >= 1000}"
-                          data-th-text="${#numbers.formatInteger(item.price, 3, 'COMMA') + '원'}"></span>
-                    <span th:if="${item.price < 1000}" th:text="${item.price + '원'}"></span>
-                </span>
-            </p>
-            <div class="text-body-secondary text-end" th:each="remainingMillis : ${remainingMillis}"  th:classappend="${item.enabled == false} ? 'finish'">
-                <small>남은 시간: </small>
-                <small class="countdown" th:attr="data-countdown-millis=${remainingMillis}"></small>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-6 col-md-8 mx-auto py-2 mb-4">
-        <!--        여기부터 -->
-        <div th:if="${item.enabled}">
-            <div class="d-flex align-items-center justify-content-center" >
-                <label for="inputPrice" class="me-2">입력 금액:</label>
-                <div class="input-group w-50">
-                    <input type="text" id="inputPrice" th:value="${item.price}" required class="inputPrice"/>
-                    <!-- 1000원씩 더하고 빼는 버튼 추가 -->
-                    <div class="input-group-append mx-2">
-                        <button type="button" onclick="add1000()" class="btn btn-secondary"><i
-                                class="fa-solid fa-arrow-up"></i></button>
-                        <button type="button" onclick="subtract1000()" class="btn btn-secondary"><i
-                                class="fa-solid fa-arrow-down"></i></button>
-                    </div>
+    <!-- 경매물품 구간 -->
+    <section class="py-3 text-center container" th:classappend="${item.enabled == false} ? 'finish'">
+        <div>
+            <div class="col-lg-6 col-md-8 mx-auto py-3 mb-4 border-bottom">
+                <div th:if="${not item.enabled}">
+                    <h1 class="finishAuction mb-5">경매가 종료된 아이템입니다.</h1>
                 </div>
+                <h2 th:text="${item.title}"></h2>
+                <img th:src="${item.url}" alt="Item Image" />
+                <p th:text="${item.info}"></p>
             </div>
-            <div id="warningMessage" class="alert alert-danger" style="display: none;"></div>
-            <div class="my-2">
-                <p>
-                    <span id="loginName" sec:authentication="name" ></span>
-                    <span>님의 보유 포인트 :</span>
-                    <span id="memberPoint">
-                        <span th:if="${point >= 1000}" th:text="${#numbers.formatInteger(point, 3, 'COMMA')} + '원'"></span>
-                        <span th:if="${point < 1000}" th:text="${point + '원'}"></span>
+        </div>
+        <div>
+            <div class="col-lg-6 col-md-8 mx-auto py-3 mb-4 border-bottom">
+                <p>입찰자 이름 : <span th:text="${memberUsername}" id="username"></span></p>
+                <p>입찰 금액 :
+                    <span id="price">
+                        <span th:if="${item.price >= 1000}"
+                            data-th-text="${#numbers.formatInteger(item.price, 3, 'COMMA') + '원'}"></span>
+                        <span th:if="${item.price < 1000}" th:text="${item.price + '원'}"></span>
                     </span>
                 </p>
+                <div class="text-body-secondary text-end" th:each="remainingMillis : ${remainingMillis}"
+                    th:classappend="${item.enabled == false} ? 'finish'">
+                    <small>남은 시간: </small>
+                    <small class="countdown" th:attr="data-countdown-millis=${remainingMillis}"></small>
+                </div>
             </div>
-            <button type="button" onclick="updatePrice()" class="btn btn-primary w-50 my-2 py-1 btn-secondary">입찰</button>
         </div>
-        <!--        여기까지-->
+
+        <div class="col-lg-6 col-md-8 mx-auto py-2 mb-4">
+            <!--        여기부터 -->
+            <div th:if="${item.enabled}">
+                <div class="d-flex align-items-center justify-content-center">
+                    <label for="inputPrice" class="me-2">입력 금액:</label>
+                    <div class="input-group w-50">
+                        <input type="text" id="inputPrice" th:value="${item.price}" required class="inputPrice" />
+                        <!-- 1000원씩 더하고 빼는 버튼 추가 -->
+                        <div class="input-group-append mx-2">
+                            <button type="button" onclick="add1000()" class="btn btn-secondary"><i
+                                    class="fa-solid fa-arrow-up"></i></button>
+                            <button type="button" onclick="subtract1000()" class="btn btn-secondary"><i
+                                    class="fa-solid fa-arrow-down"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div id="warningMessage" class="alert alert-danger" style="display: none;"></div>
+                <div class="my-2">
+                    <p>
+                        <span id="loginName" sec:authentication="name"></span>
+                        <span>님의 보유 포인트 :</span>
+                        <span id="memberPoint">
+                            <span th:if="${point >= 1000}"
+                                th:text="${#numbers.formatInteger(point, 3, 'COMMA')} + '원'"></span>
+                            <span th:if="${point < 1000}" th:text="${point + '원'}"></span>
+                        </span>
+                    </p>
+                </div>
+                <button type="button" onclick="updatePrice()"
+                    class="btn btn-primary w-50 my-2 py-1 btn-secondary">입찰</button>
+            </div>
+            <!--        여기까지-->
 
 
-        <div th:if="${showAuctionConfirmationButton}">
-            <a class="btn btn-primary w-50 py-2 btn-secondary" th:href="@{/item/final/{id}(id=${item.id})}">경매 아이템 확정</a>
+            <div th:if="${showAuctionConfirmationButton}">
+                <a class="btn btn-primary w-50 py-2 btn-secondary" th:href="@{/item/final/{id}(id=${item.id})}">경매 아이템
+                    확정</a>
+            </div>
+            <small class="text-body-secondary text-end">조회수 : </small>
+            <small class="text-body-secondary text-end" th:text="${item.view_count}"></small>
+
         </div>
-        <small class="text-body-secondary text-end">조회수 : </small>
-        <small class="text-body-secondary text-end" th:text="${item.view_count}"></small>
-
-    </div>
-</section>
+    </section>
 
 
-<div class="container text-center">
-    <div>
-        <i class="fa-solid fa-clock-rotate-left"></i>
-        <span>입찰 히스토리</span>
-    </div>
+    <div class="container text-center">
+        <div>
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>입찰 히스토리</span>
+        </div>
 
-    <div class="container align-items-center w-100" id="itemRankingHistory">
-        <div class="row">
-            <div class="col-md-12">
-                <div th:each="item, itemStat : ${itemHistory}" class="d-flex justify-content-around mb-2 mt-2">
-                    <div>
-                        <span><i class="fa-solid fa-crown" th:classappend="${(itemStat.index == 0 ? 'first ' : '') +
+        <div class="container align-items-center w-100" id="itemRankingHistory">
+            <div class="row">
+                <div class="col-md-12">
+                    <div th:each="item, itemStat : ${itemHistory}" class="d-flex justify-content-around mb-2 mt-2">
+                        <div>
+                            <span><i class="fa-solid fa-crown" th:classappend="${(itemStat.index == 0 ? 'first ' : '') +
                         (itemStat.index == 1 ? 'second ' : '') + (itemStat.index == 2 ? 'third ' : '')}"></i></span>
-                        <span th:text="${itemStat.index + 1}">1</span>
-                    </div>
-                    <div>
-                        <span th:text="${item.member.username}">송승우</span> <!-- 이 부분을 적절히 수정해주세요 -->
-                    </div>
-                    <div>
-                        <span>입찰가격</span>
-                        <span th:text="${item.price}">10000</span>
+                            <span th:text="${itemStat.index + 1}">1</span>
+                        </div>
+                        <div>
+                            <span th:text="${item.member.username}">송승우</span> <!-- 이 부분을 적절히 수정해주세요 -->
+                        </div>
+                        <div>
+                            <span>입찰가격</span>
+                            <span th:text="${item.price}">10000</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 
 
@@ -153,14 +157,13 @@
             if (currentPrice == itemPrice) {
                 alert("가격은 현재 아이템 가격보다 낮아질 수 없습니다.");
                 // 또는 다른 방법으로 사용자에게 경고 메시지를 표시할 수 있습니다.
-                // 예를 들어 Bootstrap의 modal을 사용하거나, 특정 영역에 메시지를 표시하는 등의 방법이 있습니다.
             }
         }
     </script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             // 모든 countdown 클래스를 가진 엘리먼트를 찾습니다.
-            $('.countdown').each(function() {
+            $('.countdown').each(function () {
                 var $this = $(this);
                 var countdownMillis = parseInt($this.data('countdown-millis'));
 
@@ -194,19 +197,18 @@
         var socket;
         var stompClient;
 
-        window.onload = function() {
-            // 현재 페이지 URL에서 아이템 아이디를 추출
+        window.onload = function () {
             var itemId = /*[[${itemId}]]*/;
             console.log(itemId);
             // WebSocket 연결 생성
             socket = new SockJS('/ws'); // SockJS 엔드포인트 URL
             stompClient = Stomp.over(socket);
             // 연결 시도
-            stompClient.connect({}, function(frame) {
+            stompClient.connect({}, function (frame) {
                 console.log('WebSocket 연결 완료: ' + frame);
 
                 // 서버에서 메시지를 받았을 때 처리할 함수 등록
-                stompClient.subscribe('/topic/item/detail/' + itemId, function(response) {
+                stompClient.subscribe('/topic/item/detail/' + itemId, function (response) {
                     var updatedPrice = JSON.parse(response.body);
                     console.log('Received updated price: ' + updatedPrice.price);
                     console.log('Received updated itemId: ' + updatedPrice.itemId);
@@ -217,42 +219,43 @@
 
             // 오류 발생 시 처리
             stompClient.debug = null; // 디버그 로그 비활성화
-            stompClient.ws.onerror = function(error) {
+            stompClient.ws.onerror = function (error) {
                 console.log("WebSocket 오류 발생: " + error);
             };
 
             // 연결이 닫힐 때
-            stompClient.ws.onclose = function(event) {
+            stompClient.ws.onclose = function (event) {
                 console.log("WebSocket 연결이 닫혔습니다.");
             };
 
             // 페이지를 나갈 때 연결 닫기
-            window.addEventListener('beforeunload', function() {
+            window.addEventListener('beforeunload', function () {
                 console.log("페이지를 나갑니다. WebSocket 연결이 닫혔습니다.");
                 stompClient.disconnect();
             });
         };
 
-                // 화면 상의 가격을 갱신하는 함수
-             function updatePriceOnScreen(updatedPrice) {
-                // 화면에서 가격을 표시하는 요소를 찾아서 업데이트
-                 var priceElement = document.getElementById("price");
-                 var usernameElement = document.getElementById("username");
+        // 화면 상의 가격을 갱신하는 함수
+        function updatePriceOnScreen(updatedPrice) {
+            // 화면에서 가격을 표시하는 요소를 찾아서 업데이트
+            var priceElement = document.getElementById("price");
+            var usernameElement = document.getElementById("username");
 
-                // 가격을 올바른 형식으로 표시
-                if (updatedPrice.price >= 1000) {
-                    priceElement.innerText = updatedPrice.price.toLocaleString() + "원";
-                    usernameElement.innerText = document.getElementById("loginName").innerText;
-                } else {
-                    priceElement.innerText = updatedPrice.price + "원";
-                }
+            // 가격을 올바른 형식으로 표시
+            if (updatedPrice.price >= 1000) {
+                priceElement.innerText = updatedPrice.price.toLocaleString() + "원";
+                usernameElement.innerText = updatedPrice.loginName;
+
+            } else {
+                priceElement.innerText = updatedPrice.price + "원";
             }
+        }
 
-            function updateMemberPointOnScreen() {
+        function updateMemberPointOnScreen() {
             $.ajax({
                 url: '/getMemberPoint', // 사용자의 포인트를 가져올 엔드포인트
                 method: 'GET',
-                success: function(response) {
+                success: function (response) {
                     // 성공적으로 서버에서 보유 포인트를 가져왔을 때 처리
                     var memberPoint = response.memberPoint;
                     var pointElement = document.getElementById("memberPoint");
@@ -262,67 +265,67 @@
                         pointElement.innerText = memberPoint + "원";
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     // 오류가 발생했을 때 처리
                     console.error(error);
                 }
             });
         }
 
-        // 일정 간격으로 updateMemberPointOnScreen 함수를 호출하여 보유 포인트를 갱신
-        setInterval(updateMemberPointOnScreen, 1000); // 1초마다 업데이트
+        // 가격 정보 업데이트 요청을 서버로 전송하는 함수
+        function updatePrice() {
+            var confirmed = confirm("입찰하시겠습니까?");
 
-            // 가격 정보 업데이트 요청을 서버로 전송하는 함수
-            function updatePrice() {
-                var confirmed = confirm("입찰하시겠습니까?");
-
-                var price = document.getElementById("inputPrice").value;
-                var point = /*[[${point}]]*/;
-                var itemId = /*[[${itemId}]]*/;
-                var itemPrice = /*[[${itemPrice}]]*/;
-                var loginName = /*[[${loginName}]]*/;
-                console.log('price: ' + price);
-                console.log('point: ' + point);
-                 if (confirmed) {
-                    if(price <= itemPrice){
-                        alert("너무 적은 가격을 입력하였습니다.");
-                        return;
-                    }
-                    if(price > point){
-                        alert("너무 많은 가격을 입력하였습니다.");
-                        return;
-                    }
-
-                    // 가격 정보 전송
-                    var message = {
-                        itemId: itemId,
-                        price: price
-                    };
-                    stompClient.send("/app/item/detail/" + itemId, {}, JSON.stringify(message));
-                    alert("입찰이 완료되었습니다!");
-                } else {
-                    // 사용자가 취소를 선택한 경우
-                    alert("입찰이 취소되었습니다.");
+            var price = document.getElementById("inputPrice").value;
+            var point = /*[[${point}]]*/;
+            var itemId = /*[[${itemId}]]*/;
+            var itemPrice = /*[[${itemPrice}]]*/;
+            var loginName = /*[[${username}]]*/;
+            console.log('price: ' + price);
+            console.log('point: ' + point);
+            if (confirmed) {
+                if (price <= itemPrice) {
+                    alert("너무 적은 가격을 입력하였습니다.");
+                    return;
+                }
+                if (price > point) {
+                    alert("너무 많은 가격을 입력하였습니다.");
+                    return;
                 }
 
+                // 가격 정보 전송
+                var message = {
+                    itemId: itemId,
+                    price: price,
+                    loginName: loginName
+                };
+                stompClient.send("/app/item/detail/" + itemId, {}, JSON.stringify(message));
+                alert("입찰이 완료되었습니다!");
+            } else {
+                // 사용자가 취소를 선택한 경우
+                alert("입찰이 취소되었습니다.");
             }
 
+        }
+
+        // 일정 간격으로 updateMemberPointOnScreen 함수를 호출하여 보유 포인트를 갱신
+        setInterval(updateMemberPointOnScreen, 1000); // 1초마다 업데이트
     </script>
 
 
 
-<!-- footer 시작 -->
-<div th:insert="~{common/footer :: footerFragment}"></div>
-<!-- footer 끝  -->
+    <!-- footer 시작 -->
+    <div th:insert="~{common/footer :: footerFragment}"></div>
+    <!-- footer 끝  -->
 
-<script src="https://kit.fontawesome.com/60b75f9d43.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    <script src="https://kit.fontawesome.com/60b75f9d43.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
         crossorigin="anonymous"></script>
 </body>

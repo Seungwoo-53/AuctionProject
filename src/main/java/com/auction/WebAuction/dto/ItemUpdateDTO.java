@@ -1,10 +1,20 @@
-package com.auction.WebAuction.model;
+package com.auction.WebAuction.dto;
 
-public class PriceUpdateMessage {
+public class ItemUpdateDTO {
     private Long itemId;
     private int price;
 
-    public PriceUpdateMessage(Long itemId, int price) {
+    private String loginName;
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
+    }
+
+    public ItemUpdateDTO(Long itemId, int price) {
         this.itemId = itemId;
         this.price = price;
     }
@@ -29,6 +39,7 @@ public class PriceUpdateMessage {
         return "PriceUpdateMessage{" +
                 "itemId=" + itemId +
                 ", price=" + price +
+                ", loginName=" + loginName +
                 '}';
     }
 }

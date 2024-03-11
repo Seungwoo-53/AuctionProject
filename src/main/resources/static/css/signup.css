@@ -1,12 +1,13 @@
 @font-face {
-     font-family: 'S-CoreDream-3Light';
-     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
-     font-weight: normal;
-     font-style: normal;
+  font-family: 'S-CoreDream-3Light';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
-html,body{
-     font-family: 'S-CoreDream-3Light';
+html,
+body {
+  font-family: 'S-CoreDream-3Light';
 }
 
 .form-signup {
@@ -18,13 +19,14 @@ html,body{
   z-index: 2;
 }
 
-.fa-solid.fa-frog{
+.fa-solid.fa-frog {
   padding-bottom: 15px;
 }
-.sign_up{
+
+.sign_up {
   margin-top: 10px;
 }
 
-.form-floating{
+.form-floating {
   margin-bottom: 10px;
 }

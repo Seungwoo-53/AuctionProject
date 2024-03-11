@@ -18,9 +18,11 @@ body {
 .form-signin .form-floating:focus-within {
   z-index: 2;
 }
-.fa-solid.fa-frog{
+
+.fa-solid.fa-frog {
   padding-bottom: 15px;
 }
+
 .form-signin {
   margin-bottom: -1px;
   border-bottom-right-radius: 0;
@@ -31,36 +33,41 @@ body {
   margin-bottom: 10px;
   margin-top: 10px;
 }
+
 h2 {
   color: #333;
- }
+}
 
- table {
+table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
- }
- td {
+}
+
+td {
   border: 1px solid #ddd;
   padding: 10px;
   text-align: center;
- }
+}
 
- th {
+th {
   border: 1px solid #ddd;
   padding: 10px;
   text-align: center;
   background-color: #f2f2f2;
- }
- tr:nth-child(even) {
+}
+
+tr:nth-child(even) {
   background-color: #f9f9f9;
- }
- tr:hover {
+}
+
+tr:hover {
   background-color: #f5f5f5;
- }
- .signupError{
+}
+
+.signupError {
   color: red;
   padding-left: 5px;
   margin-top: 3px;
   font-size: 15px;
- }
+}
