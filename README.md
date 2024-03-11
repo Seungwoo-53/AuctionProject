@@ -1,4 +1,5 @@
-이벤트 경매 사이트 Event-Auction 입니다!
+중고나라, 당근마켓 같은 중고거래 플랫폼에 경매시스템을 적용하면 어떨까? 
+하는 아이디어에서 출발한 프로젝트 이벤트 경매 사이트 Event-Auction 입니다!
 
 <details>
   <summary><b>시스템 아키텍처</b></summary>
