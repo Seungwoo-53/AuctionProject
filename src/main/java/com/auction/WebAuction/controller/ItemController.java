@@ -191,4 +191,11 @@ public class ItemController {
     public String errorPage(){
         return "item/error";
     }
+
+    @GetMapping("/final-list")
+    public String final_list(Model model){
+        List <FinalItem> finalItem = finalItemRepository.findAll();
+        model.addAttribute("finalItem",finalItem);
+        return "item/final-list";
+    }
 }

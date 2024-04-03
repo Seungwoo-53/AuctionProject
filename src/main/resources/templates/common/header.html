@@ -32,6 +32,8 @@
                             sec:authorize="hasRole('ROLE_ADMIN')">아이템 관리</a></li>
                     <li><a th:href="@{/member/list}" class="nav-link px-2 link-secondary"
                             sec:authorize="hasRole('ROLE_ADMIN')">회원 관리</a></li>
+                    <li><a th:href="@{/item/final-list}" class="nav-link px-2 link-secondary"
+                           sec:authorize="hasRole('ROLE_ADMIN')">낙찰 관리</a></li>
                 </ul>
 
                 <div class="col-md-3 mb-2 mb-md-0 px-2 text-end">
@@ -40,8 +42,9 @@
                         <a th:href="@{/member/signup}" class="btn btn-secondary"
                             sec:authorize="!isAuthenticated()">회원가입</a>
                         <div sec:authorize="isAuthenticated()">
-                            <a th:href="@{/member/mypage}"><i class="fa-regular fa-circle-user fa-xl"
-                                    style="color: #a9b4c7; font-size: 2em;"></i></a>
+                                <a th:href="@{/member/mypage}">
+                                    <i class="fa-regular fa-circle-user fa-xl" style="color: #a9b4c7; font-size: 2em;"></i>
+                                </a>
                             <span sec:authentication="name" style="font-size: 1.2em;">사용자</span>
 <!--                            <span sec:authentication="principal.authorities">권한 </span>-->
                             <button class="btn btn-secondary" type="submit" style="margin-bottom: 8px;">로그아웃</button>

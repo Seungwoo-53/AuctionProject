@@ -37,6 +37,9 @@
         <a th:href="@{/sort/price}" class="indexBtn">가격순</a>
         <a th:href="@{/sort/time}" class="indexBtn">시간순</a>
     </div>
+    <div>
+        <a th:href="@{/sort/price}" class="indexBtn"></a>
+    </div>
         <div class="container" id="itemsContainer">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" style="--bs-gutter-y: 3em;padding-top: 25px;">
                 <div class="col" th:each="item, index : ${item}">
