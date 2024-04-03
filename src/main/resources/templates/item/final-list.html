@@ -1,0 +1,57 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>경매</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link th:href="@{/css/AuctionItems.css}" rel="stylesheet">
+    <link th:href="@{/css/login.css}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+</head>
+<body>
+<div th:insert="~{common/header :: headerFragment}"></div>
+<section class="py-5 text-center container finalPage">
+    <h2> 최종낙찰 관리 페이지</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>경매번호</th>
+            <th>아이템 번호</th>
+            <th>이름</th>
+            <th>주소</th>
+            <th>휴대폰 번호</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="finalItem : ${finalItem}">
+            <td th:text="${finalItem.id}"></td>
+            <td th:text="${finalItem.item.id}"></td>
+            <td th:text="${finalItem.username}"></td>
+            <td th:text="${finalItem.address}"></td>
+            <td th:text="${finalItem.phone}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+</section>
+
+
+<div th:insert="~{common/footer :: footerFragment}"></div>
+
+
+<script src="https://kit.fontawesome.com/60b75f9d43.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+</body>
+</html>
